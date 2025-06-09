@@ -1,5 +1,7 @@
 # 📘 Documento de Requisitos do Sistema: Monitoramento Planos CMDCA
 
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+
 ## 🔹 Visão Geral
 
 **Nome do Projeto:** Monitoramento Planos CMDCA  
