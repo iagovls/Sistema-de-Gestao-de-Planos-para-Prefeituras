@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
@@ -62,7 +63,10 @@ public class Proposta {
     @Column(name = "observacoes")
     private String observacoes;
 
-
+    @PrePersist
+    protected void onCreate() {
+        this.dataCriacao = new Date();  // Define a data atual se não for fornecida
+    }
 
     public String getTitulo() {
         return titulo;
