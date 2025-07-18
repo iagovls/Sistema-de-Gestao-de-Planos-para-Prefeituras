@@ -4,6 +4,26 @@ databaseChangeLog:
       author: system
       changes:
         - createTable:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: system
+      changes:
+        - createTable:
             tableName: users
             columns:
               - column:
@@ -14,7 +34,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: user-name
+                  name: user-name  
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -34,9 +54,9 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-  
+
   - changeSet:
-      id: 2
+      id: 3
       author: system
       changes:
         - createTable:
@@ -50,13 +70,20 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_prefeitura
+                    references: prefeituras(id)
+              - column:
                   name: titulo
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
                   name: meta
-                  type: date
+                  type: date # '2025-07-18'
                   constraints:
                     nullable: false
               - column:
@@ -74,31 +101,60 @@ databaseChangeLog:
                   name: categoria
                   type: varchar(100)
               - column:
-                  name: data_criacao
-                  type: timestamp
+                  name: motivo
+                  type: varchar(255)
+
+  - changeSet:
+      id: 4
+      author: system
+      changes:
+        - createTable:
+            tableName: propostas_snapshot
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: proposta_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostasnapshot_proposta
+                    references: propostas(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: data_atualizacao
-                  type: timestamp
+                  name: meta
+                  type: date # '2025-07-18'
+                  constraints:
+                    nullable: false
               - column:
-                  name: data_conclusao
-                  type: date
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
               - column:
-                  name: data_cancelamento
-                  type: date
+                  name: plano
+                  type: varchar(100)
               - column:
-                  name: data_vencimento
-                  type: date
+                  name: eixo
+                  type: varchar(100)
               - column:
-                  name: data_renovacao
-                  type: date
+                  name: categoria
+                  type: varchar(100)
               - column:
-                  name: descricao
+                  name: motivo
                   type: varchar(255)
               - column:
-                  name: justificativa
-                  type: varchar(255)
+                  name: data_modificacao
+                  type: timestamp #'2025-07-18 14:30:00'
               - column:
-                  name: observacoes
+                  name: modificado_por  
                   type: varchar(255)

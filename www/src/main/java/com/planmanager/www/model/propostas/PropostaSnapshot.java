@@ -1,9 +1,6 @@
 package com.planmanager.www.model.propostas;
 
 import java.util.Date;
-import java.util.List;
-
-import com.planmanager.www.model.prefeituras.Prefeitura;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,13 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "propostas")
-public class Proposta {
+@Table(name = "propostas_snapshot")
+public class PropostaSnapshot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,17 +37,19 @@ public class Proposta {
     @Column(name = "categoria")
     private Categoria categoria;
 
-     
-    
+    @Column(name = "data_modificacao")
+    private Date dataModificacao;    
+
+    @Column(name = "modificado_por")
+    private String modificadoPor;
+
     @Column(name = "motivo")
     private String motivo;    
     
     @ManyToOne
-    @JoinColumn(name = "prefeitura_id")
-    private Prefeitura prefeitura;
-
-    @OneToMany(mappedBy = "proposta")
-    private List<PropostaSnapshot> snapshots;    
+    @JoinColumn(name = "proposta_id")
+    private Proposta proposta;
+    
     
     public String getTitulo() {
         return titulo;
@@ -114,17 +112,24 @@ public class Proposta {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-
-    public Prefeitura getPrefeitura() {
-        return prefeitura;
+    
+    public Date getDataModificacao() {
+        return dataModificacao;
     }
 
-    public void setPrefeitura(Prefeitura prefeitura) {
-        this.prefeitura = prefeitura;
+    public void setDataModificacao(Date dataModificacao) {
+        // 
+        this.dataModificacao = new Date();
     }
 
-    
-    
+    public String getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(String modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
     
 
 }
