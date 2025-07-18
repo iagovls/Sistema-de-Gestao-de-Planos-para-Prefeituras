@@ -1,4 +1,4 @@
-package com.planmanager.www.model;
+package com.planmanager.www.model.users;
 
 public enum UserRole {
     ADMIN("admin"), USER("user");

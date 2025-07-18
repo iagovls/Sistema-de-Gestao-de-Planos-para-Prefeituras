@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.planmanager.www.model.AuthenticationDTO;
-import com.planmanager.www.model.LoginResponseDTO;
-import com.planmanager.www.model.RegisterDTO;
-import com.planmanager.www.model.UpdatePasswordDTO;
-import com.planmanager.www.model.User;
-import com.planmanager.www.model.UserResponseDTO;
-import com.planmanager.www.model.UserRole;
 import com.planmanager.www.model.propostas.Proposta;
+import com.planmanager.www.model.users.User;
+import com.planmanager.www.model.users.UserRole;
+import com.planmanager.www.model.users.dto.AuthenticationDTO;
+import com.planmanager.www.model.users.dto.LoginResponseDTO;
+import com.planmanager.www.model.users.dto.RegisterDTO;
+import com.planmanager.www.model.users.dto.UpdatePasswordDTO;
+import com.planmanager.www.model.users.dto.UserResponseDTO;
 import com.planmanager.www.repositories.UserRepository;
 import com.planmanager.www.security.TokenService;
 import com.planmanager.www.repositories.PropostaRepository;
@@ -42,8 +42,7 @@ public class AuthenticationController {
     private UserRepository repository;
     @Autowired
     private TokenService tokenService;
-    @Autowired
-    private PropostaRepository propostaRepository;
+    
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationDTO data) {
@@ -119,29 +118,5 @@ public class AuthenticationController {
         repository.save(user);
 
         return ResponseEntity.ok("Senha atualizada com sucesso");
-    }
-
-    @PostMapping("/proposta")
-    public ResponseEntity<?> createProposta(@RequestBody Proposta proposta) {
-        propostaRepository.save(proposta);
-        return ResponseEntity.ok(proposta);
-    }
-
-    @GetMapping("/proposta")
-    public ResponseEntity<?> getProposta(@RequestBody Proposta proposta) {
-        propostaRepository.findByPlano(proposta.getPlano());
-        return ResponseEntity.ok(proposta);
-    }
-
-    @PutMapping("/proposta")
-    public ResponseEntity<?> updateProposta(@RequestBody Proposta proposta) {
-        propostaRepository.save(proposta);
-        return ResponseEntity.ok(proposta);
-    }
-
-    @GetMapping("/propostas")
-    public ResponseEntity<?> getPropostas() {
-        List<Proposta> propostas = propostaRepository.findAll();
-        return ResponseEntity.ok(propostas);
     }
 }

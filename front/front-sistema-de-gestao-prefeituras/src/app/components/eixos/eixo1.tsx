@@ -26,7 +26,7 @@ export default function Eixo1() {
     const [propostasCumpridasEixo5, setPropostasCumpridasEixo5] = useState(5);
     const [propostasEmAndamentoEixo5, setPropostasEmAndamentoEixo5] = useState(3);
 
-    
+
 
     const data = [
         {
@@ -76,25 +76,25 @@ export default function Eixo1() {
         }
     ]
 
-    
+
     return (
         <main className='w-dvh place-items-center'>
             {data.map((d, index) => (
-                <div className="w-full h-96 bg-white shadow-sm rounded-2xl p-5 mt-5 flex flex-col justify-center items-center">
-                <h1 className='text-xl'>{d.eixo}<strong className="">{d.titulo}</strong></h1>
-                {/* <p className='text-sm text-gray-600'>{d.descricao}</p> */}
-                <div className="w-full h-64 mt-5 rounded-lg flex justify-center items-center">
-                    {/* gráfico */}
-                    <div>
-                        <h1>Total de propostas: {d.totalPropostas}</h1>
-                        <h1>Cumpridas: {d.cumpridas}</h1>
-                        <h1>Em andamento: {d.andamento}</h1>
-                        <h1>Vencidas: {d.vencidas}</h1>
+                <div key={index} className="w-full h-96 bg-white shadow-sm rounded-2xl p-5 mt-5 flex flex-col justify-center items-center">
+                    <h1 className='text-xl'>{d.eixo}<strong className="">{d.titulo}</strong></h1>
+                    {/* <p className='text-sm text-gray-600'>{d.descricao}</p> */}
+                    <div className="w-full h-64 mt-5 rounded-lg flex justify-center items-center">
+                        {/* gráfico */}
+                        <div>
+                            <h1>Total de propostas: {d.totalPropostas}</h1>
+                            <h1>Cumpridas: {d.cumpridas}</h1>
+                            <h1>Em andamento: {d.andamento}</h1>
+                            <h1>Vencidas: {d.vencidas}</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             ))}
-            
+
         </main>
     )
 

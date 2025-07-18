@@ -1,4 +1,4 @@
-package com.planmanager.www.model;
+package com.planmanager.www.model.users.dto;
 
 public record LoginResponseDTO(String token) {
 }
