@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { usePropostas, usePrefeituras } from "../hooks/usePropostas";
+import Image from "next/image";
+import { usePropostas, usePrefeituras } from "@/app/hooks/usePropostas";
 import {
   PieChart,
   Pie,
@@ -12,16 +12,24 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
-import PrefeituraTitle from "../components/prefeituraTitle";
 
 interface Proposta {
   id: number;
   titulo: string;
   status: string;
   plano: string;
-  eixo: string;
-  categoria: string;
-  orgaoGestor: string;
+  eixo: {
+    id: number;
+    nome: string;
+  };
+  categoria: {
+    id: number;
+    nome: string;
+  };
+  orgaoGestor: {
+    id: number;
+    nome: string;
+  };
 }
 
 interface PlanoData {
@@ -32,27 +40,15 @@ interface PlanoData {
   vencidas: number;
 }
 
-interface Eixo {
-  eixoName: string;
-  totalPropostas: number;
-  cumpridas: number;
-  emAndamento: number;
-  vencidas: number;
-}
-
 const COLORS = ["#4CAF50", "#FF9800", "#F44336"];
 
 export default function Dashboard() {
-  const router = useRouter();
-  const handlePrefeituraClick = () => {    
-    router.push(`/dashboard/plano`);
-  };
   const searchParams = useSearchParams();
   const prefeituraId = Number(searchParams.get("prefeituraId"));
+  const prefeituraName = searchParams.get("prefeituraName") || "";
 
   const { propostas, isLoading, isError } = usePropostas(prefeituraId);
-  const {  prefeituras } = usePrefeituras();
-
+  const { prefeituras } = usePrefeituras();
 
   const prefeitura = prefeituras?.find((p: any) => p.id === prefeituraId);
 
@@ -119,7 +115,25 @@ export default function Dashboard() {
 
   return (
     <div className="w-full place-items-center">
-      <PrefeituraTitle/>
+      <div className="grid grid-cols-2 gap-2 justify-center text-center">
+        <h1 className="col-span-2 text-center text-4xl text-black">
+          Prefeitura de <strong>{prefeituraName}</strong>
+        </h1>
+        <Image
+          src={prefeitura?.logoPrefeitura || "/noImage.png"}
+          alt={`Logo Prefeitura Municipal de ${prefeituraName}`}
+          width={100}
+          height={100}
+          className="justify-self-end"
+        />
+        <Image
+          src={prefeitura?.logoCMDCA || "/noImage.png"}
+          alt={`Logo CMDCA ${prefeituraName}`}
+          width={100}
+          height={100}
+          className="justify-self-start"
+        />
+      </div>
       <h1 className="text-4xl mt-10 font-bold text-center">Planos</h1>
 
       {planosData.length === 0 ? (
@@ -136,17 +150,7 @@ export default function Dashboard() {
             return (
               <div
                 key={id}
-                className="w-8/12 bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105"
-                onClick={() => handlePrefeituraClick()}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handlePrefeituraClick();
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Acessar dashboard do Plano ${""}`}
+                className="w-8/12 bg-white shadow-sm rounded-2xl p-6 mt-6"
               >
                 <h2 className="text-xl font-bold text-center mb-6">
                   {plano.planoNome}

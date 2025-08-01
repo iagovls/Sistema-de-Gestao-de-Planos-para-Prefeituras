@@ -1,12 +1,12 @@
 package com.planmanager.www.model.propostas;
 
 public enum Plano {
-    UM("PLANO MUNICIPAL DE PROMOÇÃO, PROTEÇÃO E DEFESA DO DIREITO DE CONVIVÊNCIA FAMILIAR E COMUNITÁRIA DE CRIANÇAS E ADOELSCENTES"),
-    DOIS("PLANO DA PRIMEIRA INFÂNCIA"),
-    TRES("PLANO DE PREVENÇÃO E ERRADICAÇÃO DO TRABALHO INFANTIL E PROTEÇÃO AO ADOLESCENTE TRABALHADOR"),
-    QUATRO("PLANO DE ENFRENTAMENTO DA VIOLÊNCIA SEXUAL CONTRA CRIANÇAS E ADOLESCENTES"),
-    CINCO("PLANO MUNICIPAL DE ATENDIMENTO SOCIOEDUCATIVO"),
-    SEIS("PLANO MUNICIPAL DE PREVENÇÃO E ATENDIMENTO DE CRIANÇAS E ADOLESCENTES VÍTIMAS OU TESTEMUNHAS DE VIOLÊNCIA");
+    UM("Plano Municipal de Promoção, Proteção e Defesa do Direito de Convivência Familiar e Comunitária de Crianças e Adolescentes"),
+    DOIS("Plano da Primeira Infância"),
+    TRES("Plano de Prevenção e Erradicação do Trabalho Infantil e Proteção ao Adolescente Trabalhador"),
+    QUATRO("Plano de Enfrentamento da Violência Sexual contra Crianças e Adolescentes"),
+    CINCO("Plano Municipal de Atendimento Socioeducativo"),
+    SEIS("Plano Municipal de Prevenção e Atendimento de Crianças e Adolescentes Vítimas ou Testemunhas de Violência");
 
     private final String titulo;
 

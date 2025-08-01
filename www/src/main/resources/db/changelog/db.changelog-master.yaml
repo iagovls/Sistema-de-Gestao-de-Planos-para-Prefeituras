@@ -101,6 +101,9 @@ databaseChangeLog:
                   name: categoria
                   type: varchar(100)
               - column:
+                  name: orgao_gestor
+                  type: varchar(100)
+              - column:
                   name: motivo
                   type: varchar(255)
 
@@ -150,6 +153,9 @@ databaseChangeLog:
                   name: categoria
                   type: varchar(100)
               - column:
+                  name: orgao_gestor
+                  type: varchar(100)
+              - column:
                   name: motivo
                   type: varchar(255)
               - column:
@@ -158,3 +164,65 @@ databaseChangeLog:
               - column:
                   name: modificado_por  
                   type: varchar(255)
+
+  - changeSet:
+      id: 5
+      author: system
+      changes:
+        - addColumn:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: logo_prefeitura
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: logo_cmdca
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 6
+      author: system
+      changes:
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Presidente Tancredo Neves"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDePresidenteTancredoNevesLogo.jpg"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDePresidenteTancredoNevesLogo.jpg"
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Itabuna"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDeItabunaLogo.png"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDeItabunaLogo.png"
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Ilhéus"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDeIlheusLogo.png"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDeIlheusLogo.png"
+  
+  
+

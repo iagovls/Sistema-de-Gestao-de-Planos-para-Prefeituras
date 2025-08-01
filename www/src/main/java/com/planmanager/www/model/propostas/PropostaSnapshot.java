@@ -37,6 +37,9 @@ public class PropostaSnapshot {
     @Column(name = "categoria")
     private Categoria categoria;
 
+    @Column(name = "orgao_gestor")
+    private OrgaoGestor orgaoGestor;
+
     @Column(name = "data_modificacao")
     private Date dataModificacao;    
 
@@ -112,7 +115,17 @@ public class PropostaSnapshot {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+
     
+    
+    public OrgaoGestor getOrgaoGestor() {
+        return orgaoGestor;
+    }
+
+    public void setOrgaoGestor(OrgaoGestor orgaoGestor) {
+        this.orgaoGestor = orgaoGestor;
+    }
+
     public Date getDataModificacao() {
         return dataModificacao;
     }
