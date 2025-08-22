@@ -1,0 +1,476 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: system
+      changes:
+        - createTable:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false            
+              - column:
+                  name: logo_prefeitura
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: logo_cmdca
+                  type: varchar(255)
+                  constraints:
+                    nullable: true 
+
+  - changeSet:
+      id: 2 
+      author: system
+      changes:
+        - createTable:
+            tableName: planos
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_planos_prefeitura
+                    references: prefeituras(id)
+              
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                  
+  - changeSet:
+      id: 3
+      author: system
+      changes:
+        - createTable:
+            tableName: eixos
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_eixos_prefeitura
+                    references: prefeituras(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 4
+      author: system
+      changes:
+        - createTable:
+            tableName: categorias
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_categorias_prefeitura
+                    references: prefeituras(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 5
+      author: system
+      changes:
+        - createTable:
+            tableName: orgaos_gestores
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_orgaos_gestores_prefeitura
+                    references: prefeituras(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 6
+      author: system
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user-name  
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_users_prefeitura
+                    references: prefeituras(id)
+
+  - changeSet:
+      id: 7
+      author: system
+      changes:
+        - createTable:
+            tableName: propostas
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: prefeitura_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_prefeitura
+                    references: prefeituras(id)
+              - column:
+                  name: plano_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_plano
+                    references: planos(id)
+              - column:
+                  name: eixo_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_eixo
+                    references: eixos(id)
+              - column:
+                  name: categoria_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_categoria
+                    references: categorias(id)
+              - column:
+                  name: orgao_gestor_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostas_orgao_gestor
+                    references: orgaos_gestores(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: meta
+                  type: date # '2025-07-18'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              
+              - column:
+                  name: motivo
+                  type: varchar(255)
+
+  - changeSet:
+      id: 8
+      author: system
+      changes:
+        - createTable:
+            tableName: propostas_snapshot
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: proposta_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_propostasnapshot_proposta
+                    references: propostas(id)
+              - column:
+                  name: titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: meta
+                  type: date # '2025-07-18'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: plano_titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: eixo_titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: categoria_titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: orgao_gestor_titulo
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: motivo
+                  type: varchar(255)
+              - column:
+                  name: data_modificacao
+                  type: timestamp #'2025-07-18 14:30:00'
+                  constraints:
+                    nullable: false
+                  name: modificado_por  
+                  type: varchar(255)
+
+              
+  - changeSet:
+      id: 9
+      author: system
+      changes:
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Presidente Tancredo Neves"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDePresidenteTancredoNevesLogo.jpg"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDePresidenteTancredoNevesLogo.jpg" 
+              
+
+                  
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Itabuna"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDeItabunaLogo.png"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDeItabunaLogo.png"
+              
+        - insert:
+            tableName: prefeituras
+            columns:
+              - column:
+                  name: name
+                  value: "Ilhéus"
+              - column:
+                  name: logo_prefeitura
+                  value: "/prefeituraDeIlheusLogo.png"
+              - column:
+                  name: logo_cmdca
+                  value: "/cmdcaDeIlheusLogo.png"
+
+  - changeSet:
+      id: 10
+      author: user
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "0"
+              - column:
+                  name: user-name
+                  value: "Admin Master"
+              - column:
+                  name: email
+                  value: "admin@admin.com"
+              - column:
+                  name: password
+                  value: "$2a$12$WO7zzqNdRnhqNBeI4CpBY.qN/NfJ4UlKtzvztmgXl2J/uq8/7yIi6" # bcrypt for '123456'
+              - column:
+                  name: role
+                  value: "0"
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: prefeitura_id
+                  value: "1"
+              - column:
+                  name: user-name
+                  value: "Admin Prefeitura Tancredo Neves"
+              - column:
+                  name: email
+                  value: "admin@presidentetancredo.com"
+              - column:
+                  name: password
+                  value: "$2a$12$WO7zzqNdRnhqNBeI4CpBY.qN/NfJ4UlKtzvztmgXl2J/uq8/7yIi6" # bcrypt for '123456'
+              - column:
+                  name: role
+                  value: "1"
+
+        # inserir 3 usuarios normais na prefeitura de tancredo
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: user-name
+                  value: "Maria da Silva"
+              - column:
+                  name: email
+                  value: "maria@presidentetancredo.com"
+              - column:
+                  name: password
+                  value: "$2a$12$WO7zzqNdRnhqNBeI4CpBY.qN/NfJ4UlKtzvztmgXl2J/uq8/7yIi6" # bcrypt for '123456'
+              - column:
+                  name: role
+                  value: "2"
+              - column:
+                  name: prefeitura_id
+                  value: "1"
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "3"
+              - column:
+                  name: user-name
+                  value: "João da Silva"
+              - column:
+                  name: email
+                  value: "joao@presidentetancredo.com"
+              - column:
+                  name: password
+                  value: "$2a$12$WO7zzqNdRnhqNBeI4CpBY.qN/NfJ4UlKtzvztmgXl2J/uq8/7yIi6" # bcrypt for '123456'
+              - column:
+                  name: role
+                  value: "2"
+              - column:
+                  name: prefeitura_id 
+                  value: "1"
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "4"
+              - column:
+                  name: user-name
+                  value: "Ana da Silva"
+              - column:
+                  name: email
+                  value: "ana@presidentetancredo.com"
+              - column:
+                  name: password
+                  value: "$2a$12$WO7zzqNdRnhqNBeI4CpBY.qN/NfJ4UlKtzvztmgXl2J/uq8/7yIi6" # bcrypt for '123456'
+              - column:
+                  name: role
+                  value: "2"
+              - column:
+                  name: prefeitura_id 
+                  value: "1"
+
+
+  
+              

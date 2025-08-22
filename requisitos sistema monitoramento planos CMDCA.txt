@@ -1,0 +1,158 @@
+pagina inicial do site
+
+
+usuario senha () limite 2 usuarios usuario mestre cmdca(alterar usuario) usuario padrao(alterar propostas)
+trocar senha
+esqueci senha
+
+começar plano > eixo > categoria > proposta
+monitoramento > todas propostas com filtros
+
+logomarca prefeitura e cmdca (conselho municipal dos direitos da criança e do adolescente)
+5 eixos (
+	promoção de direitos, (34% das propostas cumpridas ) 
+	proteção de direitos, 
+	participação de crianças e adolescentes, 
+	controle social, 
+	gestão)
+relatório
+
+categorias (exemplo: assistência social (67% cumprida)) 
+relatório
+
+planos (exemplos: plano decenal (45% cumprido), plano trabalho infatil) 
+relatório
+
+propostas, meta e status (desativar proposta, alterar nome, meta, status(), incluir nova proposta)
+ordem alfabética
+histórico alteração
+relatório
+
+todo 1 de janeiro, alterar automaticamente o status para não cumpridas das propostas com meta permanente. Enviar email informando da alteração e solicitar uma avaliação destas propostas.
+
+dashboard com gráfico pizza com status geral
+
+botao download relatório pdf 
+	se geral, apenas 1 grafico geral e 5 graficos de eixo
+	se no eixo, grafico geral do eixo e 1 grafico para cada categoria
+logo prefeitura e logo cmdca
+gráfico pizza geral com informações ao lado ou abaixo
+gráfico pizza do eixo 1 com informações ao lado ou abaixo
+...
+quantidade de propostas cumpridas, em andamento, vencidas
+
+
+
+
+lembrete 1 vez ao mes para os usuarios, cmdca e prefeitura ( 
+	acesse o sistema
+	lembrete metas a vencer e vencidas
+	1 ano antes, 6 meses antes, 3 meses antes, 1 mes antes, todo mês após vencido )
+
+contate-nos
+motivo (elogio, sugestão, reclamação)
+nome
+e-mail
+mensagem
+
+
+prompt
+
+Crie uma aplicação chamada PlanManager com frontend em React ou Next.js, backend em Java com Spring Boot, e banco de dados MySQL.
+
+Objetivo: Monitorar planos e propostas das prefeituras dentro do CMDCA (Conselho Municipal dos Direitos da Criança e do Adolescente).
+
+Funcionalidades:
+- Cadastro de Prefeituras  (com cidade, estado, upload de logo da prefeitura e upload de logo do CMDCA)
+- Cadastro de Planos (vinculados à prefeitura, com título)
+- Cadastro de Eixos (vinculados à prefeitura, com título)
+- Cadastro de Categorias (vinculados à prefeitura, com título)
+- Cadastro de Orgão Gestor (vinculados à prefeitura, com título)
+- Cadastro de Propostas (vinculados à Prefeitura, com título)
+  - Ao criar uma nova proposta, deve ser possível escolher o plano (dentre a lista de planos), o eixo (dentre a lista de eixos), a categoria (dentre a lista de categorias), o órgão gestor (dentre a lista de orgaos gestores), uma data para meta ou permanente (permanente seria uma proposta que não tem meta, ou seja, deve manter sempre ativa), um caixa de seleção (concluída)
+- Cada prefeitura vai ter um usuário admin (o admin não poderá criar, editar ou cancelar nada, apenas criar novos usuários ou apagar usuários)
+- Cadastro de usuário pelo admin(apenas os usuários poderão criar, editar ou cancelar propostas, prefeituras, plano, eixos, categorias)
+- Sistema com token de login, senha e esqueci a senha. (email para redefinição de senha deverá ser enviada para o email do usuário)
+- Cadastro de admin (apenas eu (usuário master) posso cadastrar admins, essa seção não pode aparecer para o usuário ou admin)
+- Quem não estiver logado, pode ver todo site, exceto: sessão de criar, editar ou cancelar propostas; criar planos, eixos, categorias, órgãos gestores; sessão dos históricos de alterações das propostas; cadastro de usuários; 
+- Página inicial com as prefeituras disponíveis. Adicione 3 prefeituras no banco de dados como exemplo.
+  - Ao clicar em uma prefeitura, mostrar um dashboard com o nome da prefeitura e as logos da prefeitura e cmdca e abaixo os planos dessa prefeitura. Em cada plano deve ter a quantidade de propostas concluidas, vencidas, em andamento e o total (soma das concluidas, vencidas e em andamento desse plano). As propostas desativadas não contam aqui
+  - Ao clicar em um plano, mostrar um dashboard com o nome da prefeitura e as logos da prefeitura e cmdca, abaixo o nome do plano e abaixo os eixos desse plano. Em cada eixo deve ter a quantidade de propostas concluidas, vencidas, em andamento e o total (soma das concluidas, vencidas e em andamento desse eixo). As propostas desativadas não contam aqui
+  - Ao clicar em um eixo, mostrar um dashboard com o nome da prefeitura e as logos da prefeitura e cmdca, abaixo o nome do plano, abaixo o nome do eixo e abaixo as categorias desse eixo. Em cada categoria deve ter a quantidade de propostas concluidas, vencidas, em andamento e o total (soma das concluidas, vencidas e em andamento dessa categoria). As propostas desativadas não contam aqui
+  - Ao clicar em uma categoria, mostrar o nome da prefeitura, as logos da prefeitura e cmdca, o plano,  o eixo, a categoria e abaixo, uma lista com todas as propostas dessa categoria (primeiro as ativas e depois as desativadas). Em cada proposta, informar o título, o órgão gestor, a meta (ano da data ou o texto "permanente") e o status (concluído na cor verde se foi concluído, em andamento na cor amarela se não for concluido e a data de hoje for menor que a data da meta, vencida na cor vermelha se não for concluído e a data de hoje for maior que a data da meta)
+  - Ao clicar em uma proposta poder editar essa proposta (alterar tudo, menos a prefeitura, marcar ou desmarcar como concluído, ativar ou desativar a proposta). Ao confirmar a alteração, informar o motivo da alteração. Abaixo mostrar o histórico de alteração com a data, motivo, usuário que alterou e como era a proposta antes de alterar.
+- Na página inicial, abaixo das prefeituras, deve ter um botão "Monitoramento" que leva á página Monitoramento onde deve haver a lista de todas as propostas de todas as prefeituras, onde será possível pesquisar por uma proposta e filtrar por prefeitura, plano, eixo, categoria, orgão gestor, status
+- API RESTful com DTOs e validações
+- Frontend responsivo com CRUD e tela de login (UI)
+- quero que crie no banco de dados como exemplo para demonstração, a prefeitura de Ilhéus, a prefeitura de Itabuna, a prefeitura de Salvador, 1 usuário admin para cada prefeitura, 3 usuários para cada prefeitura, 200 propostas para cada prefeitura
+- dentre os planos existentes:
+  - ("Plano Municipal de Promoção, Proteção e Defesa do Direito de Convivência Familiar e Comunitária de Crianças e Adolescentes"),
+    ("Plano da Primeira Infância"),
+    ("Plano de Prevenção e Erradicação do Trabalho Infantil e Proteção ao Adolescente Trabalhador"),
+    ("Plano de Enfrentamento da Violência Sexual contra Crianças e Adolescentes"),
+    ("Plano Municipal de Atendimento Socioeducativo"),
+    ("Plano Municipal de Prevenção e Atendimento de Crianças e Adolescentes Vítimas ou Testemunhas de Violência"); 
+- dentre os eixos existentes:
+  - ("Promoção dos Direitos de Crianças e Adolescentes"),
+    ("Proteção e Defesa dos Direitos"),
+    ("Protagonismo e Participação de Crianças e Adolescentes"),
+    ("Controle Social da Efetivação dos Direitos"),
+    ("Gestão da Política Nacional dos Direitos Humanos de Crianças e Adolescentes"),
+    ("Gestão da Política Nacional dos Direitos Humanos de Crianças e Adolescentes");
+- dentre as categorias existentes
+  - ("Assistência Social"),
+    ("Educação"),
+    ("Cultura"),
+    ("Esporte"),
+    ("Meio Ambiente"),
+    ("Saúde"),
+    ("Desenvolvimento Econômico"),
+    ("Conselho Tutelar"),
+    ("Sistema de Justiça: Defensoria, Promotoria e Vara da Infância e Juventude"),
+    ("Conselho Municipal dos Direitos da Criança e do Adolescente");
+- dentre os órgãos gestores
+  - ("Gestão"),
+    ("Administração"),
+    ("CMDCA"),
+    ("SEMAS"),
+    ("Controle Social"),
+    ("SGD"),
+    ("CT"),
+    ("Camara Municipal"),
+    ("SEMDS"),
+    ("Justiça (Vara da Infância e Juventude)"),
+    ("Assistência Social"),
+    ("Esporte"),
+    ("Cultura"),
+    ("Educação"),
+    ("Secretaria de Desenvolvimento Econômico"),
+    ("Secretaria de Desenvolvimento Social"),
+    ("Secretaria de Infraestrutura"),
+    ("Secretaria de Educação"),
+    ("CREAS"),
+    ("Saúde"),
+    ("Diretoria de Meio Ambiente"),
+    ("Meio Ambiente");
+
+Relacionamentos:
+- Uma prefeitura tem vários planos
+- Uma prefeitura tem vários eixos
+- Uma prefeitura tem várias categorias
+- Uma prefeitura tem vários orgãos gestores
+- Uma prefeitura tem várias propostas
+
+Tecnologias:
+- Java, Spring Boot, JPA, MySQL, OAuth
+- React ou Next.js
+- Deploy sugerido: Vercel (frontend), Render (backend), Railway (banco)
+
+
+Não retornar entidades diretamente. Usar DTOs para entrada e saída. Usar `@Valid` nas requisições.
+
+
+---
+
+
+
+
+
