@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import com.planmanager.www.model.orgaos.OrgaoGestor;
+import com.planmanager.www.model.orgaos.OrgaoGestorDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
-import com.planmanager.www.model.propostas.OrgaoGestor;
 import com.planmanager.www.repositories.OrgaosGestoresRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
 
@@ -28,8 +29,10 @@ public class OrgaosGestoresController {
     private PrefeituraRepository prefeituraRepository;
 
     @GetMapping
-    public List<OrgaoGestor> getAll() {
-        return orgaosGestoresRepository.findAll();
+    public List<OrgaoGestorDTO> getAll() {
+        return orgaosGestoresRepository.findAll().stream().map(orgaoGestor -> {
+            return new OrgaoGestorDTO(orgaoGestor.getId(), orgaoGestor.getTitulo(), orgaoGestor.getPrefeitura().getId());
+        }).toList();
     }
 
     @PostMapping

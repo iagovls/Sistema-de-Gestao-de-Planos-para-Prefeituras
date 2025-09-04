@@ -1,5 +1,9 @@
-export default function Title(props: any){
+interface TitleProps {
+    titulo: string;
+}
+
+export default function Title(props: TitleProps) {
     return (
-        <h1 className="font-bold text-3xl">{props.titulo}</h1>
+        <h1 className="font-bold text-3xl mb-4 mt-6">{props.titulo}</h1>
     )
 }

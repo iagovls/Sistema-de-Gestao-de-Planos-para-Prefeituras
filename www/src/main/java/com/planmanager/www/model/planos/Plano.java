@@ -1,4 +1,4 @@
-package com.planmanager.www.model.propostas;
+package com.planmanager.www.model.planos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.planmanager.www.model.prefeituras.Prefeitura;
+import com.planmanager.www.model.propostas.Proposta;
 
 @Entity
 @Table(name = "planos")

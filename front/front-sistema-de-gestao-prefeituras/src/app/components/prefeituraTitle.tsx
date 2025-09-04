@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { usePrefeituras } from "../hooks/usePropostas";
 
 
@@ -10,7 +10,7 @@ export default function PrefeituraTitle() {
     const prefeituraName = useSearchParams().get("prefeituraName");
     const prefeituraId = Number(useSearchParams().get("prefeituraId"));
     const { prefeituras, isLoading, isError, error } = usePrefeituras();
-    const prefeitura = prefeituras?.find((p: any) => p.id === prefeituraId);
+    const prefeitura = prefeituras?.find((p: { id: number }) => p.id === prefeituraId);
     const searchParams = useSearchParams();
 
     const planoName = searchParams.get("planoName");
@@ -19,10 +19,10 @@ export default function PrefeituraTitle() {
 
     const info = (title: string, subTitle: string | null) => {
     return (
-        <div className="flex flex-col items-center w-auto mb-3 ">
-            <h1 className="text-lg font-bold text-start w-full rounded-md">{title}</h1>
+        <div className="flex flex-col items-start w-auto mb-3 ">
+            <h1 className="text-lg font-bold w-full rounded-md">{title}</h1>
             
-            <h1 className="text-base text-start">{subTitle}</h1>
+            <h1 className="text-base">{subTitle}</h1>
             
         </div>
     );
@@ -67,14 +67,10 @@ export default function PrefeituraTitle() {
             )
         }
     }
-
-
-    const router = useRouter();
-
     if (isLoading) {
         return (
             <div>
-
+                <p>Carregando prefeitura...</p>
             </div>
         )
     }
@@ -82,7 +78,7 @@ export default function PrefeituraTitle() {
     if (isError) {
         return (
             <div>
-
+                <p>Erro ao carregar prefeitura: {error?.message}</p>
             </div>
         )
     }
@@ -93,7 +89,7 @@ export default function PrefeituraTitle() {
                 {/* Nome da prefeitura e logos */}
 
                 <h1 className="col-span-2 text-center text-4xl text-black">
-                    Prefeitura de <strong>{prefeituraName}</strong>
+                    Prefeitura de <strong>{prefeitura?.name}</strong>
                 </h1>
                 <Image
                     src={prefeitura?.logoPrefeitura || "/noImage.png"}

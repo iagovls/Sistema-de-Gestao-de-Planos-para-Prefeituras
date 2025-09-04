@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import com.planmanager.www.model.planos.Plano;
+import com.planmanager.www.model.planos.PlanoDTO;
+import com.planmanager.www.model.planos.PlanoRequestDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
-import com.planmanager.www.model.propostas.Plano;
 import com.planmanager.www.repositories.PlanosRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
 
@@ -28,12 +30,15 @@ public class PlanosController {
     private PrefeituraRepository prefeituraRepository;
 
     @GetMapping
-    public List<Plano> getAll() {
-        return planosRepository.findAll();
+    public List<PlanoDTO> getAll() {
+        // retornar dto
+        List<Plano> planos = planosRepository.findAll();
+        return planos.stream().map(plano -> new PlanoDTO(plano.getId(), plano.getTitulo(), plano.getPrefeitura().getId())).toList();
+        
     }
 
     @PostMapping
-    public ResponseEntity<PlanoDTO> create(@Valid @RequestBody PlanoDTO dto) {
+    public ResponseEntity<PlanoRequestDTO> create(@Valid @RequestBody PlanoRequestDTO dto) {
         Prefeitura prefeitura = prefeituraRepository.findById(dto.prefeituraId()).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
         Plano plano = new Plano();
         plano.setTitulo(dto.titulo());

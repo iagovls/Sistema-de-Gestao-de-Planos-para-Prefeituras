@@ -26,6 +26,7 @@ public class TokenService {
                     .withSubject(user.getEmail())
                     .withExpiresAt(genExpirationDate())
                     .withClaim("role", user.getRole().name())
+                    .withClaim("prefeituraId", user.getPrefeitura().getId())
                     .sign(algorithm);
             return token;
         } catch (

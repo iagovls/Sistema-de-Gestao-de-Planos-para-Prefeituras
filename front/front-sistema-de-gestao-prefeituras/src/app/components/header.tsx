@@ -62,8 +62,8 @@ export function Header() {
 
     return (
         <div className="w-full h-auto flex justify-between p-3 text-white">
-            <Link href={"/"}>
-                <button className="bg-azulclaro w-24 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm">Início</button>
+            <Link href={"/"} className="bg-azulclaro w-24 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center text-white">
+                Início
             </Link>
             {firstNome ? (
                 <div className="relative" ref={dropdownRef}>
@@ -93,10 +93,8 @@ export function Header() {
                     )}
                 </div>
             ) : (
-                <Link href={"/conta/login"}>
-                    <button className="bg-azulclaro w-24 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center gap-2">
-                        <h1>Entrar</h1>
-                    </button>
+                <Link href={"/conta/login"} className="bg-azulclaro w-24 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center gap-2 text-white">
+                    Entrar
                 </Link>
             )}
         </div>

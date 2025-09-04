@@ -4,18 +4,13 @@ import { useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { usePropostas, usePrefeituras } from "@/app/hooks/usePropostas";
 import PrefeituraTitle from "@/app/components/prefeituraTitle";
-import Grafico from "@/app/components/grafico";
 import BotaoIncluir from "@/app/components/botoes/botaoIncluir";
+import Title from "@/app/components/title";
+import Info from "@/app/components/info";
+import { Proposta, Prefeitura } from "@/app/types/proposta";
 
-interface Proposta {
-  id: number;
-  titulo: string;
-  status: string;
-  plano: string;
-  eixo: string;
-  categoria: string;
-  orgaoGestor: string;
-}
+
+
 
 interface CategoriaData {
   nome: string;
@@ -33,7 +28,7 @@ export default function Categorias() {
   const eixoName = searchParams.get("eixoName");
   
   const { prefeituras } = usePrefeituras();
-  const prefeitura = prefeituras?.find((p: any) => p.id === prefeituraId);
+  const prefeitura = prefeituras?.find((p: Prefeitura) => p.id === prefeituraId);
   
   const router = useRouter();
   const handlePropostasClick = (categoria: CategoriaData) => {
@@ -48,10 +43,10 @@ export default function Categorias() {
 
     const categoriasMap = new Map<string, CategoriaData>();
 
-    propostas.forEach((proposta: Proposta) => {
-      if (proposta.plano == planoName && proposta.eixo == eixoName) {
+    propostas.filter((proposta: Proposta) => proposta.ativa).forEach((proposta: Proposta) => {
+      if (proposta.plano.titulo == planoName && proposta.eixo.titulo == eixoName) {
 
-        const nome = proposta.categoria || "categoria não definido";
+        const nome = proposta.categoria.titulo || "categoria não definido";
         if (!categoriasMap.has(nome)) {
           categoriasMap.set(nome, {
             nome,
@@ -70,12 +65,13 @@ export default function Categorias() {
             categoria.cumpridas++;
             break;
           case "em andamento":
-          case "andamento":
+          if (proposta.meta > new Date().getFullYear().toString()) {
             categoria.emAndamento++;
-            break;
-          case "vencida":
+          }
+          if (proposta.meta < new Date().getFullYear().toString()) {
             categoria.vencidas++;
-            break;
+          }
+          break;   
           default:
             categoria.emAndamento++; // Status não reconhecido vai para em andamento
         }
@@ -83,16 +79,9 @@ export default function Categorias() {
     });
 
     return Array.from(categoriasMap.values());
-  }, [propostas]);
+  }, [propostas, planoName, eixoName]);
 
-  // Função para gerar dados do gráfico
-  const getChartData = (categoria: CategoriaData) => {
-    return [
-      { name: "Cumpridas", value: categoria.cumpridas },
-      { name: "Em Andamento", value: categoria.emAndamento },
-      { name: "Vencidas", value: categoria.vencidas },
-    ];
-  };
+
 
   // if (!prefeituraId) return <p>ID da prefeitura não fornecido.</p>;
   if (isLoading) return <p>Carregando propostas...</p>;
@@ -101,82 +90,15 @@ export default function Categorias() {
   return (
     <div className="w-full place-items-center">
       <PrefeituraTitle />   
-      <BotaoIncluir titulo="categoria"/>
-      <h1 className="font-bold text-3xl mt-5">Categorias</h1>
-      {categoriasData.length === 0 ? (
-        <div className="text-center mt-10">
-          <p className="text-gray-600">
-            Nenhuma proposta encontrada para esta categoria.
-          </p>
-        </div>
-      ) : (
-        <main className="w-full max-w-6xl mx-auto flex flex-col items-center">
-          {categoriasData.map((categoria, id) => {
-            const chartData = getChartData(categoria);
-
-            return (
-              <div
-                key={id}
-                className="w-8/12 bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105"
-                onClick={() => handlePropostasClick(categoria)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handlePropostasClick(categoria);
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Acessar dashboard do Plano ${""}`}
-              >
-                <h2 className="text-xl font-bold text-center mb-6">
-                  {categoria.nome}
-                </h2>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <Grafico chartData={chartData}/>
-                  {/* Estatísticas */}
-                  <div className="space-y-4">
-                    <h1 className="text-center font-bold ">Propostas</h1>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-green-100 p-4 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-green-600">
-                          {categoria.cumpridas}
-                        </div>
-                        <div className="text-sm text-green-700">Cumpridas</div>
-                      </div>
-                      <div className="bg-orange-100 p-4 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-orange-600">
-                          {categoria.emAndamento}
-                        </div>
-                        <div className="text-sm text-orange-700">
-                          Em Andamento
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-red-100 p-4 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-red-600">
-                          {categoria.vencidas}
-                        </div>
-                        <div className="text-sm text-red-700">Vencidas</div>
-                      </div>
-                      <div className="bg-blue-100 p-4 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-blue-600">
-                          {categoria.totalPropostas}
-                        </div>
-                        <div className="text-sm text-blue-700">Total</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Gráfico */}
-                </div>
-              </div>
-            );
-          })}
-        </main>
-      )}
+      <Title titulo={"Categorias"}/>
+      <BotaoIncluir 
+        titulo="categoria"
+        onClick={() => router.push(`/dashboard/plano/eixo/categoria/criar-categoria?prefeituraId=${prefeituraId}`)}
+      />
+      <Info
+        statusData={categoriasData}
+        onClick={handlePropostasClick}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useState } from "react"; // Adicione o useEffect aqui
+import DOMPurify from "dompurify";
 
 
 export default function Login() {
@@ -12,8 +13,6 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         // Use DOMPurify to sanitize email and password before sending
-        // @ts-ignore
-        const DOMPurify = require('dompurify')(window);
         const cleanEmail = DOMPurify.sanitize(email);
         const cleanPassword = DOMPurify.sanitize(password);
         try {
@@ -40,13 +39,15 @@ export default function Login() {
     };
 
     return (
-        <main className="flex flex-col justify-center items-center w-full gap-5 mt-10">
+        <main className="flex flex-col justify-center items-center w-full gap-5">
           
             <div className="md:w-96 text-center bg-white rounded-2xl shadow-sm w-10/12 h-auto p-10">
                 <h1 className="pb-10">Acesso apenas para <strong className="text-verde">administradores</strong></h1>
                 <form onSubmit={handleSubmit} className="flex flex-col mb-5">
                     <h1 className="text-start font-semibold">E-mail</h1>
                     <input
+                        id="email"
+                        placeholder="Digite seu e-mail"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -57,6 +58,8 @@ export default function Login() {
                     />
                     <h1 className="text-start font-semibold">Senha</h1>
                     <input
+                        id="password"
+                        placeholder="Digite sua senha"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

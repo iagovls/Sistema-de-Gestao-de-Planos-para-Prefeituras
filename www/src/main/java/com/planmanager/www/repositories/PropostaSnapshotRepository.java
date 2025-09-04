@@ -10,4 +10,5 @@ public interface PropostaSnapshotRepository extends JpaRepository<PropostaSnapsh
     @Override
     public List<PropostaSnapshot> findAll();
     
+    public List<PropostaSnapshot> findByPropostaId(Long propostaId);
 }

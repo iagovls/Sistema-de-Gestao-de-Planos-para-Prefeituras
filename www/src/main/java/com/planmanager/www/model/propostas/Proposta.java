@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.planmanager.www.model.categorias.Categoria;
+import com.planmanager.www.model.eixos.Eixo;
+import com.planmanager.www.model.orgaos.OrgaoGestor;
+import com.planmanager.www.model.planos.Plano;
 import com.planmanager.www.model.prefeituras.Prefeitura;
 
 import jakarta.persistence.CascadeType;
@@ -56,7 +60,14 @@ public class Proposta {
     private OrgaoGestor orgaoGestor;
     
     @Column(name = "motivo")
-    private String motivo;    
+    private String motivo;
+    
+    @Column(name = "meta_permanente")
+    private Boolean metaPermanente;
+    
+    @Column(name = "ativa")
+    private Boolean ativa;
+       
     
     @ManyToOne
     @JoinColumn(name = "prefeitura_id")
@@ -70,7 +81,12 @@ public class Proposta {
         
     }
     
-   
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
     public String getTitulo() {
         return titulo;
     }
@@ -84,7 +100,7 @@ public class Proposta {
     }
     
     public void setMeta(Date meta) {
-        this.meta = meta;
+            this.meta = meta;
     }
     
     public StatusProposta getStatus() {
@@ -95,15 +111,25 @@ public class Proposta {
         this.status = status;
     }    
     
-    
-    
     public String getMotivo() {
         return motivo;
     }
     
     public void setMotivo(String motivo) {
         this.motivo = motivo;
-    }   
+    }
+    
+    public Boolean getMetaPermanente() {
+        return metaPermanente;
+    }
+    
+    public void setMetaPermanente(Boolean metaPermanente) {
+        if(metaPermanente == null ){
+            this.metaPermanente = false;
+        } else {
+            this.metaPermanente = metaPermanente;
+        }
+    } 
     
     public Long getId() {
         return id;
@@ -149,6 +175,20 @@ public class Proposta {
 
     public void setPrefeitura(Prefeitura prefeitura) {
         this.prefeitura = prefeitura;
+    }
+
+
+    public Boolean getAtiva() {
+        return ativa;
+    }
+
+
+    public void setAtiva(Boolean ativa) {
+        if(ativa == null){
+            this.ativa = true;
+        } else {
+            this.ativa = ativa;
+        }
     }
 
     

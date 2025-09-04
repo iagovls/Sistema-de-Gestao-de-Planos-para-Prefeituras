@@ -2,10 +2,10 @@ package com.planmanager.www.model.prefeituras;
 
 import java.util.List;
 
-import com.planmanager.www.model.propostas.Eixo;
-import com.planmanager.www.model.propostas.OrgaoGestor;
-import com.planmanager.www.model.propostas.Categoria;
-import com.planmanager.www.model.propostas.Plano;
+import com.planmanager.www.model.categorias.Categoria;
+import com.planmanager.www.model.eixos.Eixo;
+import com.planmanager.www.model.orgaos.OrgaoGestor;
+import com.planmanager.www.model.planos.Plano;
 import com.planmanager.www.model.propostas.Proposta;
 import com.planmanager.www.model.users.User;
 

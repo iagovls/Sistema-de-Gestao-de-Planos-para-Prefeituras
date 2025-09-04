@@ -8,7 +8,7 @@ import {
 } from "recharts";
 
 interface GraficoProps {
-    chartData: any[];
+    chartData: Array<{name: string; value: number}>;
 }
 
 export default function Grafico({ chartData }: GraficoProps) {
@@ -16,7 +16,7 @@ export default function Grafico({ chartData }: GraficoProps) {
     const COLORS = ["#4CAF50", "#FF9800", "#F44336"];
 
     return (
-        <div className="h-64">
+        <div className="h-64 w-96">
             {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -25,7 +25,7 @@ export default function Grafico({ chartData }: GraficoProps) {
                             cx="50%"
                             cy="50%"
                             labelLine={false}
-                            label={({ percent }) =>
+                            label={({ percent, name }) =>
                                 `${name} ${((percent || 0) * 100).toFixed(0)}%`
                             }
                             outerRadius={80}

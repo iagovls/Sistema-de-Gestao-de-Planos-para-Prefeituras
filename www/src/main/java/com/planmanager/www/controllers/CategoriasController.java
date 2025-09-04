@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import com.planmanager.www.model.categorias.Categoria;
+import com.planmanager.www.model.categorias.CategoriaDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
-import com.planmanager.www.model.propostas.Categoria;
 import com.planmanager.www.repositories.CategoriasRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
 
@@ -28,8 +29,10 @@ public class CategoriasController {
     private PrefeituraRepository prefeituraRepository;
 
     @GetMapping
-    public List<Categoria> getAll() {
-        return categoriasRepository.findAll();
+    public List<CategoriaDTO> getAll() {
+        return categoriasRepository.findAll().stream().map(categoria -> {
+            return new CategoriaDTO(categoria.getId(), categoria.getTitulo(), categoria.getPrefeitura().getId());
+        }).toList();
     }
 
     @PostMapping

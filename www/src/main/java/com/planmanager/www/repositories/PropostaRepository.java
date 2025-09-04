@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.planmanager.www.model.propostas.Categoria;
-import com.planmanager.www.model.propostas.Eixo;
-import com.planmanager.www.model.propostas.Plano;
+import com.planmanager.www.model.categorias.Categoria;
+import com.planmanager.www.model.eixos.Eixo;
+import com.planmanager.www.model.planos.Plano;
 import com.planmanager.www.model.propostas.Proposta;
 
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {

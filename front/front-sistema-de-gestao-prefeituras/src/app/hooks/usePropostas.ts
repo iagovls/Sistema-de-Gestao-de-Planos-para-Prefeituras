@@ -20,7 +20,6 @@ export function usePropostas(prefeituraId?: number) {
     shouldFetch ? `http://localhost:8080/propostas/por-prefeitura?prefeituraId=${prefeituraId}` : null,
     fetcher
   );
-  // console.log("propostas: ", data);
   
     return {
     propostas: data,
@@ -28,6 +27,19 @@ export function usePropostas(prefeituraId?: number) {
     isError: !!error,
   };
 
+}
+
+export function historicoProposta(propostaId?: number) {
+  const shouldFetch = propostaId !== undefined;
+  const { data, error } = useSWR(
+    shouldFetch ? `http://localhost:8080/propostas/historico/${propostaId}` : null,
+    fetcher
+  );
+  return {
+    propostasSnapshots: data,
+    isLoading: !data && !error,
+    isError: !!error,
+  }
 }
 
 // Hook para buscar todas as propostas sem filtro
@@ -43,7 +55,6 @@ export function useTodasPropostas() {
 
 export function usePrefeituras() {
   const { data, error } = useSWR("http://localhost:8080/prefeituras", fetcher);
-  console.log("prefeituras: ", data);
   return {
     prefeituras: data,
     isLoading: !data && !error,
@@ -59,3 +70,5 @@ async function validateToken(headers: HeadersInit){
     localStorage.removeItem("token");
   }
 }
+
+

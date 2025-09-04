@@ -4,23 +4,19 @@ import Image from "next/image";
 import { MainTitle } from "./components/mainTitle";
 import { useRouter } from "next/navigation";
 import { usePrefeituras } from "./hooks/usePropostas";
+import BotaoComun from "./components/botoes/botaoComun";
+import Link from "next/link";
+import { Prefeitura } from "./types/proposta";
 
-interface Prefeitura {
-  id: number;
-  name: string; 
-  logoPrefeitura: string;
-  logoCMDCA: string;
-}
 
 export default function Home() {
   const router = useRouter();
   
   const { prefeituras, isLoading, isError, error } = usePrefeituras();
 
-  // console.log("prefeituras", prefeituras);
 
   const handlePrefeituraClick = (prefeitura: Prefeitura) => {
-    router.push(`/dashboard?prefeituraId=${prefeitura.id}&prefeituraName=${encodeURIComponent(prefeitura.name)}`);
+    router.push(`/dashboard?prefeituraId=${prefeitura.id}`);
   };
 
   const handleMonitoramentoClick = () => {
@@ -118,13 +114,13 @@ export default function Home() {
           
           {/* Botão de Monitoramento */}
           <div className="text-center mt-16 mb-10">
-            <button
-              onClick={handleMonitoramentoClick}
-              className="bg-azulclaro hover:cursor-pointer text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+            <Link
+              href="/monitoramento"
               aria-label="Acessar página de monitoramento"
+              className="inline-block"
             >
-              Monitoramento
-            </button>
+              <BotaoComun titulo="Monitoramento" onClick={handleMonitoramentoClick} />
+            </Link>
           </div>
         </div>
       </main>

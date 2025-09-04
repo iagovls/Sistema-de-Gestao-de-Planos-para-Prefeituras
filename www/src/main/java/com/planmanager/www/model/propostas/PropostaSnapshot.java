@@ -47,7 +47,13 @@ public class PropostaSnapshot {
     private String modificadoPor;
 
     @Column(name = "motivo")
-    private String motivo;    
+    private String motivo;
+    
+    @Column(name = "meta_permanente")
+    private Boolean metaPermanente;
+    
+    @Column(name = "proposta_cancelada")
+    private Boolean propostaCancelada;
     
     @ManyToOne
     @JoinColumn(name = "proposta_id")
@@ -84,7 +90,23 @@ public class PropostaSnapshot {
     
     public void setMotivo(String motivo) {
         this.motivo = motivo;
-    }   
+    }
+    
+    public Boolean getMetaPermanente() {
+        return metaPermanente;
+    }
+    
+    public void setMetaPermanente(Boolean metaPermanente) {
+        this.metaPermanente = metaPermanente;
+    }
+    
+    public Boolean getPropostaCancelada() {
+        return propostaCancelada;
+    }
+    
+    public void setPropostaCancelada(Boolean propostaCancelada) {
+        this.propostaCancelada = propostaCancelada;
+    }
     
     public Long getId() {
         return id;

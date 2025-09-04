@@ -1,4 +1,4 @@
-package com.planmanager.www.model.propostas;
+package com.planmanager.www.model.eixos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import java.util.List;
 import com.planmanager.www.model.prefeituras.Prefeitura;
+import com.planmanager.www.model.propostas.Proposta;
 
 @Entity
 @Table(name = "eixos")

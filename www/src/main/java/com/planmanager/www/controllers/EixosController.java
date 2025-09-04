@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import com.planmanager.www.model.eixos.Eixo;
+import com.planmanager.www.model.eixos.EixoDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
-import com.planmanager.www.model.propostas.Eixo;
 import com.planmanager.www.repositories.EixosRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
 
@@ -30,7 +31,7 @@ public class EixosController {
     @GetMapping
     public ResponseEntity<List<EixoDTO>> getAll() {
         List<EixoDTO> dtos = eixosRepository.findAll().stream().map(e -> {
-            EixoDTO eixo = new EixoDTO(e.getTitulo(), e.getPrefeitura().getId());
+            EixoDTO eixo = new EixoDTO(e.getId(), e.getTitulo(), e.getPrefeitura().getId());    
             return eixo;
         }).toList();
         return ResponseEntity.ok(dtos);

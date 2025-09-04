@@ -5,6 +5,7 @@
   --foreground: #171717;
   --azulClaro: #496373;
   --verde: #85a63f;
+  --vermelho: #c10007
 }
 
 @theme inline {
@@ -12,6 +13,7 @@
   --color-foreground: var(--foreground);
   --color-azulclaro: var(--azulClaro);
   --color-verde: var(--verde);
+  --color-vermelho: var(--vermelho);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   

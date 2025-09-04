@@ -2,9 +2,7 @@ package com.planmanager.www.model.propostas;
 
 public enum StatusProposta {
     EM_ANDAMENTO("Em Andamento"),
-    CONCLUIDA("Concluída"),
-    CANCELADA("Cancelada"),
-    VENCIDA("Vencida");
+    CONCLUIDA("Concluída");
 
     private final String descricao;
 

@@ -1,4 +1,4 @@
-package com.planmanager.www.model.propostas;
+package com.planmanager.www.model.orgaos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,16 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
 import java.util.List;
 
 import com.planmanager.www.model.prefeituras.Prefeitura;
+import com.planmanager.www.model.propostas.Proposta;
 
 @Entity
-@Table(name = "categorias")
-public class Categoria {
+@Table(name = "orgaos_gestores")
+public class OrgaoGestor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,14 +26,14 @@ public class Categoria {
     @Column(name = "titulo")
     private String titulo;
 
+    @OneToMany(mappedBy = "orgaoGestor")
+    private List<Proposta> propostas;
+
     @ManyToOne
     @JoinColumn(name = "prefeitura_id")
     private Prefeitura prefeitura;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Proposta> propostas;
-
-    public Categoria() {
+    public OrgaoGestor() {
         
     }
 
@@ -51,19 +53,19 @@ public class Categoria {
         this.titulo = titulo;
     }
 
-    public Prefeitura getPrefeitura() {
-        return prefeitura;
-    }
-
-    public void setPrefeitura(Prefeitura prefeitura) {
-        this.prefeitura = prefeitura;
-    }
-
     public List<Proposta> getPropostas() {
         return propostas;
     }
 
     public void setPropostas(List<Proposta> propostas) {
         this.propostas = propostas;
+    }
+
+    public Prefeitura getPrefeitura() {
+        return prefeitura;
+    }
+
+    public void setPrefeitura(Prefeitura prefeitura) {
+        this.prefeitura = prefeitura;
     }
 }

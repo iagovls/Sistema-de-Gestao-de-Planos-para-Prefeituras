@@ -5,13 +5,6 @@ import Link from "next/link";
 import Title from "@/app/components/title";
 import BotaoComun from "@/app/components/botoes/botaoComun";
 
-interface AuthStatusResponse {
-    authenticated: boolean;
-    user?: {
-        completeName: string;  // ou nomeCompleto, dependendo do backend
-        email: string;
-    };
-}
 
 
 
@@ -78,10 +71,10 @@ export default function MinhaConta() {
                         </div>
                         <div>{user.email}</div>
                         <div className="flex flex-col items-center">
-                            <Link href="/alterar-senha" className="cursor-pointer">
+                            <Link href="/conta/redefinicao-senha" className="cursor-pointer">
                                 <BotaoComun titulo="Alterar senha"/>
                             </Link>
-                            {user.role === "MASTER" ? (
+                            {user.role === "ADMIN" ? (
                             <Link href="/conta/gerenciar-usuarios" className="cursor-pointer">
                                 <BotaoComun titulo="Gerenciar usuários"/>   
                             </Link>

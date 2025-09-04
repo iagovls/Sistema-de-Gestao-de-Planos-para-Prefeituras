@@ -308,13 +308,20 @@ databaseChangeLog:
               - column:
                   name: motivo
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: data_modificacao
                   type: timestamp #'2025-07-18 14:30:00'
                   constraints:
                     nullable: false
+                    defaultValue: "2025-07-18 14:30:00"
+              - column:
                   name: modificado_por  
                   type: varchar(255)
+                  constraints:
+                    nullable: false
+              
 
               
   - changeSet:
@@ -471,6 +478,61 @@ databaseChangeLog:
                   name: prefeitura_id 
                   value: "1"
 
+  - changeSet:
+      id: 11
+      author: system
+      changes:
+        - addColumn:
+            tableName: propostas
+            columns:
+              - column:
+                  name: meta_permanente
+                  type: boolean
+                  constraints:
+                    nullable: true
+                  defaultValue: false
+
+  - changeSet:
+      id: 12
+      author: system
+      changes:
+        - addColumn:
+            tableName: propostas_snapshot
+            columns:
+              - column:
+                  name: meta_permanente
+                  type: boolean
+                  constraints:
+                    nullable: true
+                  defaultValue: false
+
+  - changeSet:
+      id: 13
+      author: system
+      changes:
+        - dropNotNullConstraint:
+            tableName: propostas
+            columnName: meta
+            columnDataType: date
+
+        - dropNotNullConstraint:
+            tableName: propostas_snapshot
+            columnName: meta
+            columnDataType: date
+
+  - changeSet:
+      id: 14
+      author: system
+      changes:
+        - addColumn:
+            tableName: propostas
+            columns:
+              - column:
+                  name: ativa
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
 
   
               

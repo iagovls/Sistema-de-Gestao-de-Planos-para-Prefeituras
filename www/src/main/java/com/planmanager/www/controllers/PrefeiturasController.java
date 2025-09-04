@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.planmanager.www.model.categorias.CategoriaDTO;
+import com.planmanager.www.model.eixos.EixoDTO;
+import com.planmanager.www.model.orgaos.OrgaoGestorDTO;
+import com.planmanager.www.model.planos.PlanoDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
 import com.planmanager.www.model.prefeituras.dto.PrefeituraDTO;
 import com.planmanager.www.repositories.PrefeituraRepository;
@@ -26,26 +30,26 @@ public class PrefeiturasController {
     public ResponseEntity<List<PrefeituraDTO>> getAll() {
         List<PrefeituraDTO> dtos = prefeituraRepository.findAll().stream()
                 .map(p -> new PrefeituraDTO(
-                    p.getId(), 
-                    p.getName(), 
-                    p.getLogoPrefeitura(), 
-                    p.getLogoCMDCA() 
-                    // p.getPlanos().stream().map(plano -> {
-                    //     PlanoDTO dto = new PlanoDTO(plano.getTitulo(), p.getId());
-                    //     return dto;
-                    // }).toList(), 
-                    // p.getEixos().stream().map(e -> {
-                    //     EixoDTO dto = new EixoDTO(e.getTitulo(), p.getId());
-                    //     return dto;
-                    // }).toList(), 
-                    // p.getCategorias().stream().map(c -> {
-                    //     CategoriaDTO dto = new CategoriaDTO(c.getTitulo(), p.getId());
-                    //     return dto;
-                    // }).toList(), 
-                    // p.getOrgaosGestores().stream().map(o -> {
-                    //     OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getTitulo(), p.getId());
-                    //     return dto;
-                    // }).toList()
+                    p.getId(),
+                    p.getName(),
+                    p.getLogoPrefeitura(),
+                    p.getLogoCMDCA(),
+                    p.getPlanos().stream().map(plano -> {
+                        PlanoDTO dto = new PlanoDTO(plano.getId(), plano.getTitulo(), p.getId());
+                        return dto;
+                    }).toList(),
+                    p.getEixos().stream().map(e -> {
+                        EixoDTO dto = new EixoDTO(e.getId(), e.getTitulo(), p.getId());
+                        return dto;
+                    }).toList(),
+                    p.getCategorias().stream().map(c -> {
+                        CategoriaDTO dto = new CategoriaDTO(c.getId(), c.getTitulo(), p.getId());
+                        return dto;
+                    }).toList(),
+                    p.getOrgaosGestores().stream().map(o -> {
+                        OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getId(), o.getTitulo(), p.getId());
+                        return dto;
+                    }).toList()
                     ))
                 .toList();
 
@@ -62,23 +66,23 @@ public class PrefeiturasController {
             prefeitura.getId(), 
             prefeitura.getName(), 
             prefeitura.getLogoPrefeitura(), 
-            prefeitura.getLogoCMDCA() 
-            // prefeitura.getPlanos().stream().map(p -> {
-            //     PlanoDTO dto = new PlanoDTO(p.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getEixos().stream().map(e -> {
-            //     EixoDTO dto = new EixoDTO(e.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getCategorias().stream().map(c -> {
-            //     CategoriaDTO dto = new CategoriaDTO(c.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getOrgaosGestores().stream().map(o -> {
-            //     OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList()
+            prefeitura.getLogoCMDCA(), 
+            prefeitura.getPlanos().stream().map(p -> {
+                PlanoDTO dto = new PlanoDTO(p.getId(), p.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getEixos().stream().map(e -> {
+                EixoDTO dto = new EixoDTO(e.getId(), e.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getCategorias().stream().map(c -> {
+                CategoriaDTO dto = new CategoriaDTO(c.getId(), c.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getOrgaosGestores().stream().map(o -> {
+                OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getId(), o.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList()
         );
 
         return ResponseEntity.ok(prefeituraDTO);
@@ -95,23 +99,23 @@ public class PrefeiturasController {
             prefeitura.getId(), 
             prefeitura.getName(), 
             prefeitura.getLogoPrefeitura(), 
-            prefeitura.getLogoCMDCA() 
-            // prefeitura.getPlanos().stream().map(p -> {
-            //     PlanoDTO dto = new PlanoDTO(p.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getEixos().stream().map(e -> {
-            //     EixoDTO dto = new EixoDTO(e.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getCategorias().stream().map(c -> {
-            //     CategoriaDTO dto = new CategoriaDTO(c.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList(), 
-            // prefeitura.getOrgaosGestores().stream().map(o -> {
-            //     OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getTitulo(), prefeitura.getId());
-            //     return dto;
-            // }).toList()
+            prefeitura.getLogoCMDCA(), 
+            prefeitura.getPlanos().stream().map(p -> {
+                PlanoDTO dto = new PlanoDTO(p.getId(), p.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getEixos().stream().map(e -> {
+                EixoDTO dto = new EixoDTO(e.getId(), e.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getCategorias().stream().map(c -> {
+                CategoriaDTO dto = new CategoriaDTO(c.getId(), c.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList(), 
+            prefeitura.getOrgaosGestores().stream().map(o -> {
+                OrgaoGestorDTO dto = new OrgaoGestorDTO(o.getId(), o.getTitulo(), prefeitura.getId());
+                return dto;
+            }).toList()
         );
 
         return ResponseEntity.ok(prefeituraDTO);

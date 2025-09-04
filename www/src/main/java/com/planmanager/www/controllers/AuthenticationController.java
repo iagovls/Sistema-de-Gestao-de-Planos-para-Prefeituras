@@ -14,11 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planmanager.www.model.prefeituras.Prefeitura;
@@ -31,11 +33,19 @@ import com.planmanager.www.model.users.dto.UpdatePasswordDTO;
 import com.planmanager.www.model.users.dto.UserResponseDTO;
 import com.planmanager.www.repositories.PrefeituraRepository;
 import com.planmanager.www.repositories.UserRepository;
+import com.planmanager.www.security.PasswordGenerator;
 import com.planmanager.www.security.TokenService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin
 @RequestMapping("auth")
+@Tag(name = "Users", description = "User management API")
+@SecurityRequirement(name = "bearerAuth")
 public class AuthenticationController {
 
     @Autowired
@@ -75,30 +85,24 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@AuthenticationPrincipal UserDetails userDetails, @RequestBody RegisterDTO data) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
-        }
-
-        if (data.role() != UserRole.ADMIN) {
+    @Operation(summary = "Create a new user")
+    public ResponseEntity<?> register(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegisterDTO data) {
+        Long prefeituraId = ((User) userDetails).getPrefeitura() != null ? ((User) userDetails).getPrefeitura().getId() : null;
+              
+        if (((User) userDetails).getRole() != UserRole.ADMIN) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
         }
 
-        if (this.repository.findByEmail(data.email()) != null)
-            return ResponseEntity.badRequest().build();
-        if (data.userName() == null)
-            return ResponseEntity.badRequest().build();
-        if (data.password() == null)
-            return ResponseEntity.badRequest().build();
-        if (data.role() == null)
-            return ResponseEntity.badRequest().build();
-        if (data.prefeituraId() == null)
-            return ResponseEntity.badRequest().build();
+        if (prefeituraId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Prefeitura não informada");
+        }
+        
+        Prefeitura prefeitura = prefeituraRepository.findById(prefeituraId).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
+        
+        // gerar uma senha aleatória
+        String password = PasswordGenerator.generateRandomPassword(); // Gera uma senha aleatória
+        String encryptedPassword = new BCryptPasswordEncoder().encode(password); // Encripta a senha usando BCrypt
 
-        Prefeitura prefeitura = prefeituraRepository.findById(data.prefeituraId()).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
-
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         // Sempre define a role como USER ao registrar
         User newUser = new User(
             data.userName(), 
@@ -113,22 +117,7 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    // registrar varios usuarios
-    @PostMapping("/register-many")
-    public ResponseEntity<?> registerMany(@RequestBody List<RegisterDTO> data) {
-        for (RegisterDTO registerDTO : data) {
-            if (this.repository.findByEmail(registerDTO.email()) != null)
-                return ResponseEntity.badRequest().build();
-    
-            String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
-            // Sempre define a role como USER ao registrar
-            Prefeitura prefeitura = prefeituraRepository.findById(registerDTO.prefeituraId()).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
-            User newUser = new User(registerDTO.userName(), registerDTO.email(), encryptedPassword, UserRole.USER, prefeitura);
-
-            this.repository.save(newUser);
-        }
-        return ResponseEntity.ok().build();
-    }
+   
 
 
     @GetMapping("/me")
@@ -142,7 +131,7 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
 
-        UserResponseDTO responseDTO = new UserResponseDTO(user.getCompleteName(), user.getEmail(), user.getRole());
+        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getCompleteName(), user.getEmail(), user.getRole());
         // var auth = SecurityContextHolder.getContext().getAuthentication();
         // boolean userIsNull = auth.getPrincipal() == null;
         // System.out.println("User is null? " + userIsNull);
@@ -171,31 +160,58 @@ public class AuthenticationController {
     }
 
     @GetMapping("/get-all")
+    @Operation(summary = "Get all users")
     public ResponseEntity<?> getAllUsers(@AuthenticationPrincipal UserDetails userDetails) {
 
-        // se o usuário for admin, retornar todos os usuarios e filtre por prefeitura
+        // se o usuário for admin, retorna todos os usuarios e filtra por prefeitura
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
         }
 
         if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            List<User> users = repository.findAll();
-            for (User user : users) {
-                System.out.println("user.getPrefeitura:" + user.getPrefeitura());
-            }
+            List<User> users = repository.findAll();            
 
-            List<UserResponseDTO> userResponses = users.stream().map(
-                u -> u.getPrefeitura().getId() == ((User) userDetails).getPrefeitura().getId() ? new UserResponseDTO(u.getCompleteName(), u.getEmail(), u.getRole()) : null
-            ).filter(u -> u != null).collect(Collectors.toList());
-            return ResponseEntity.ok(users);
+            List<UserResponseDTO> userResponses = users.stream().map( u -> {
+                if (u.getPrefeitura() == null) { 
+                    return null;
+                }
+                // Se o usuário for da mesma prefeitura do usuário autenticado, retorna o DTO
+                if (u.getPrefeitura().getId() != null && 
+                    ((User) userDetails).getPrefeitura() != null && 
+                    !u.getId().equals(((User) userDetails).getId()) &&
+                    u.getPrefeitura().getId().equals(((User) userDetails).getPrefeitura().getId())) {
+                    return new UserResponseDTO(u.getId(), u.getCompleteName(), u.getEmail(), u.getRole());
+                }
+                return null;
+            }).filter(u -> u != null).collect(Collectors.toList());
+            return ResponseEntity.ok(userResponses);
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado"); 
         }   
     }
 
-    @GetMapping("/test")
-    public List<User> test(){
-        List<User> users = repository.findAll();
-        return users;
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete a user")
+    public ResponseEntity<?> deleteUserById(@RequestParam String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = repository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
+
+        if (user.getRole() != UserRole.ADMIN) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
+        }
+
+        User userToDelete = repository.findById(id).orElse(null);
+        if (userToDelete == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+
+        repository.delete(userToDelete);
+        return ResponseEntity.ok("Usuário deletado com sucesso");
+    }
+
+    
 }

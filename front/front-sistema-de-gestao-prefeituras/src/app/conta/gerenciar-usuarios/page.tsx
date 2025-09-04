@@ -1,91 +1,152 @@
 "use client";
 
-
 import Title from "@/app/components/title";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import BotaoIncluir from "@/app/components/botoes/botaoIncluir";
-import BotaoComun from "@/app/components/botoes/botaoComun";
+import PopUpConfirmation from "@/app/components/popupConfirmation";
 
-
+// interface User com nome e email
+interface User {
+  id: string;
+  completeName: string;
+  email: string;
+  role: string;
+}
 
 export default function GerenciarUsuarios() {
-    const [user, setUser] = useState<{ nomeCompleto: string; email: string; role: string } | null>(null);
-    const [erro, setErro] = useState<string | null>(null);
+  // Estado para armazenar a lista de usuários
+  // e o erro, se houver
 
-    useEffect(() => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-        const fetchUser = async () => {
-            try {
-                const token = localStorage.getItem("token");
+  const handleIncluirUsuario = () => {
+    // Redirecionar para a página de criação de usuário
+    window.location.href = "/conta/gerenciar-usuarios/criar-usuario";
+  };
 
-                if (!token) {
-                    setErro("Token não encontrado");
-                    return;
-                }
+  // handle confirmação de exclusão
+  const handleConfirmDelete = (user: User) => {
+    setUserToDelete(user);
+    setShowModal(true);
+  };
 
-                const res = await fetch("http://localhost:8080/auth/me", {
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                    },
-                });
+  const handleDelete = async () => {
+    if (!userToDelete) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setErro("Token não encontrado");
+      setShowModal(false);
+      return;
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:8080/auth/delete?id=${userToDelete.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Erro ao deletar usuário: " + res.statusText);
+      }
+      setSuccessMsg("Usuário excluído com sucesso!");
+      setUsers(users.filter((user) => user.id !== userToDelete.id));
+    } catch (error: any) {
+      setErro(error.message);
+    } finally {
+      setShowModal(false);
+      setUserToDelete(null);
+    }
+  };
 
-                if (!res.ok) {
-                    throw new Error("Falha ao buscar usuário: " + res.statusText);
-                }
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-                const data = await res.json();
-                console.log(data)
+        if (!token) {
+          setErro("Token não encontrado");
+          return;
+        }
 
+        const res = await fetch("http://localhost:8080/auth/get-all", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-                // Ajuste para o campo retornado pelo backend (userName ou nomeCompleto)
-                setUser({
-                    nomeCompleto: data.completeName, // ou data.user.nomeCompleto
-                    email: data.email,
-                    role: data.role
-                });
+        if (!res.ok) {
+          throw new Error("Falha ao buscar usuários: " + res.statusText);
+        }
+        setIsLoading(false);
+        setErro(null);
+        const data = await res.json();
 
-            } catch (error: any) {
-                console.error("Erro ao buscar usuário:", error);
-                setErro(error.message);
-            }
-        };
+        if (data.length === 0) {
+          setErro("Nenhum usuário encontrado");
+          return;
+        }
+        setUsers(data);
+      } catch (error: any) {
+        console.error("Erro ao buscar usuário:", error);
+        setErro(error.message);
+      }
+    };
 
-        fetchUser();
-    }, []);
-    return (
-        <main className="flex flex-col items-center gap-10">
+    fetchUser();
+  }, []);
+  return (
+    <main className="flex flex-col items-center ">
+      <Title titulo={"Gerenciar usuários"} />
+      
+      <button onClick={handleIncluirUsuario} className="mb-4">
+          <BotaoIncluir titulo="usuário" />
+          {}
+      </button>
+      
 
-            <Title titulo={"Gerenciar usuários"} />
-            <BotaoIncluir titulo="usuário" />
+      <div className="md:w-96 gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5 mt-5">
+        {erro && <div className="text-red-600">{erro}</div>}
+        {isLoading && <div>Carregando...</div>}
 
-
-            <div className="md:w-96 gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5">
-
-                {erro && <div className="text-red-600">{erro}</div>}
-
-                {!user && !erro && <div>Carregando...</div>}
-
-                {user && (
-                    <div className="flex flex-col items-center gap-3">
-                        <div className="flex gap-3">
-                            <div>{user.nomeCompleto}</div>
-                            {user.role === "MASTER" ? <div className="bg-verde text-white text-xs rounded-full font-bold px-3 pt-1 text-center w-auto">Usuário administrador</div> : ""}
-                        </div>
-                        <div>{user.email}</div>
-                        <div className="flex flex-col items-center">
-                            <Link href="/alterar-senha" className="cursor-pointer">
-                                <BotaoComun titulo="Alterar senha" />
-                            </Link>
-                            {user.role === "MASTER" ? (
-                                <Link href="/conta/gerenciar-usuarios" className="cursor-pointer">
-                                    <BotaoComun titulo="Gerenciar usuários" />
-                                </Link>
-                            ) : ""}
-                        </div>
-                    </div>
-                )}
+        {users &&
+          users.map((user, index) => (
+            <div key={index} className="flex justify-between items-center p-2 ">
+              <div>
+                <p className="font-semibold">{user.completeName}</p>
+                <p className="text-sm">{user.email}</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 hover:cursor-pointer"
+                  onClick={() => handleConfirmDelete(user)}
+                >
+                  Excluir
+                </button>
+              </div>
             </div>
-        </main>
-    )
+          ))}
+      </div>
+      {successMsg && <div className="text-green-600 mt-2">{successMsg}</div>}
+
+      {/* Modal de confirmação */}
+      {showModal && userToDelete && 
+      <PopUpConfirmation
+          message={`Tem certeza que deseja excluir ${userToDelete.completeName}?`}
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setShowModal(false);
+            setUserToDelete(null);
+          }}
+        />    
+      }
+    </main>
+  );
 }

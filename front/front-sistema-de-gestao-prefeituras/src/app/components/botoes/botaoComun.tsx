@@ -1,7 +1,15 @@
-export default function BotaoComun(props: any){
+export default function BotaoComun(props: {
+    type?: "button" | "submit" | "reset" | undefined;
+    cor?: string;
+    titulo: string;
+    onClick?: () => void;
+}){
     return (
-        <button className="hover:cursor-pointer transition-transform hover:scale-110 mt-2 text-white bg-verde w-auto py-1 px-4 h-auto rounded-2xl font-semibold cursor-pointer shadow-2xl self-start">
-
+        <button 
+            type={props.type ? props.type : "button"} 
+            onClick={props.onClick}
+            className= {` ${props.cor ? props.cor : "bg-verde"} mt-5 text-white text-center bg-verde w-auto p-4 h-10 rounded-2xl font-semibold cursor-pointer shadow-2xl self-center flex items-center justify-center gap-2`}
+        >
             {props.titulo}
         </button>
     )
