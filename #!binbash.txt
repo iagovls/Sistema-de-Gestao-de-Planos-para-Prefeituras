@@ -1,0 +1,106 @@
+#!/bin/bash
+sudo yum update -y
+sudo yum install -y docker git
+
+# Instalar Docker Compose
+sudo mkdir -p /usr/local/lib/docker/cli-plugins
+sudo curl -L https://github.com/docker/compose/releases/download/v2.39.2/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+# Iniciar Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -a -G docker ec2-user
+
+# Clonar o repositório
+cd /home/ec2-user
+
+GITHUB_TOKEN=$(sudo aws ssm get-parameter \
+  --name "/github/pat" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region us-east-1)
+
+git clone https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-de-Planos-para-Prefeituras.git
+
+cd Sistema-de-Gestao-de-Planos-para-Prefeituras
+
+# Criar o docker-compose.yml
+cat <<EOF > docker-compose.yml
+services:
+  frontend:
+    build: ./front/front-sistema-de-gestao-prefeituras
+    ports:
+      - "80:3000"
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    depends_on:
+      - backend
+
+  backend:
+    build: ./www
+    ports:
+      - "8080:8080"
+    restart: always
+    environment: 
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com:3306/propostasDB
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=WQpB6apqNwsb2LcY0ys5
+      - SPRING_PROFILES_ACTIVE=prod
+EOF
+
+# Criar Dockerfile para o frontend
+cat <<EOF > front/front-sistema-de-gestao-prefeituras/Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+EOF
+
+# Criar Dockerfile para o backend
+cat <<EOF > www/Dockerfile
+# Etapa de build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /app
+
+# Baixa dependências em cache
+COPY pom.xml .
+RUN mvn -B -q -DskipTests dependency:go-offline
+
+# Copia código-fonte e empacota
+COPY src ./src
+RUN mvn -B -DskipTests package
+
+# Etapa de runtime
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+
+# Copia o JAR gerado na etapa de build
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+EOF
+
+# Build do backend localmente (se necessário)
+# cd www
+# chmod +x mvnw
+# ./mvnw clean package -DskipTests
+# cd ..
+
+# Iniciar os serviços
+sudo docker compose up -d
+
+# Configurar logs
+echo "Deploy completed at $(date)" >> /var/log/deploy.log
