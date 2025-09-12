@@ -29,7 +29,7 @@ export function usePropostas(prefeituraId?: number) {
 
 }
 
-export function historicoProposta(propostaId?: number) {
+export function useHistoricoProposta(propostaId?: number) {
   const shouldFetch = propostaId !== undefined;
   const { data, error } = useSWR(
     shouldFetch ? `http://localhost:8080/propostas/historico/${propostaId}` : null,
@@ -64,11 +64,6 @@ export function usePrefeituras() {
   };
 }
 
-async function validateToken(headers: HeadersInit){  
-  const res = await fetch("http://localhost:8080/auth/me", { headers });
-  if(!res.ok){
-    localStorage.removeItem("token");
-  }
-}
+
 
 

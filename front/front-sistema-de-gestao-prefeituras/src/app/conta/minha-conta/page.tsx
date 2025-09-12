@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Title from "@/app/components/title";
 import BotaoComun from "@/app/components/botoes/botaoComun";
-
+import { Erro } from "@/app/types/proposta";
 
 
 
 export default function MinhaConta() {
     const [user, setUser] = useState<{ nomeCompleto: string; email: string; role: string } | null>(null);
-    const [erro, setErro] = useState<string | null>(null);
+    const [erro, setErro] = useState<Erro | null>(null);
 
     useEffect(() => {
         
@@ -19,7 +19,7 @@ export default function MinhaConta() {
                 const token = localStorage.getItem("token");
 
                 if (!token) {
-                    setErro("Token não encontrado");
+                    setErro({ message: "Token não encontrado" });
                     return;
                 }
                 
@@ -44,9 +44,10 @@ export default function MinhaConta() {
                     role: data.role
                 });
 
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error("Erro ao buscar usuário:", error);
-                setErro(error.message);
+                const message = error instanceof Error ? error.message : "Erro desconhecido ao buscar usuário";
+                setErro({ message });
             }
         };
 
@@ -59,7 +60,7 @@ export default function MinhaConta() {
             <Title titulo={"Minha conta"}/>
             <div className="md:w-96 gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5">
 
-                {erro && <div className="text-red-600">{erro}</div>}
+                {erro && <div className="text-red-600">{erro.message}</div>}
 
                 {!user && !erro && <div>Carregando...</div>}
 

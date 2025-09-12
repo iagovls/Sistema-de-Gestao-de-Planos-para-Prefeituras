@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { usePropostas } from "../hooks/usePropostas";
 import PrefeituraTitle from "../components/prefeituraTitle";
@@ -18,6 +18,13 @@ interface PlanoData {
 }
 
 export default function Dashboard() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <DashboardContent />
+    </Suspense>
+  )}
+
+function DashboardContent() {
   const router = useRouter();
   const handlePlanoClick = (plano: PlanoData) => {    
     router.push(`/dashboard/plano?prefeituraId=${prefeituraId}&planoName=${plano.nome}`);

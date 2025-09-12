@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { usePropostas, usePrefeituras } from "@/app/hooks/usePropostas";
 
@@ -19,6 +19,14 @@ interface EixoData {
 }
 
 export default function Eixos() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <EixosContent />
+    </Suspense>
+  )
+}   
+
+function EixosContent() {
   const searchParams = useSearchParams();
 
   const prefeituraId = Number(searchParams.get("prefeituraId"));

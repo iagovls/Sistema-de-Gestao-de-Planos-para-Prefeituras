@@ -51,3 +51,14 @@ export interface OrgaoGestor {
   titulo: string;
   id: number;
 }
+
+export interface Erro {
+    message: string;
+}
+
+export interface User {
+  id: string;
+  completeName: string;
+  email: string;
+  role: string;
+}

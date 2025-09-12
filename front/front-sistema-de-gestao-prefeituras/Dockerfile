@@ -1,9 +1,10 @@
-FROM node:18-alpine
+FROM node:latest
 
-WORKDIR /app
+WORKDIR /front-sistema-de-gestao-prefeituras
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN rm -rf node_modules
+RUN npm i
 
 COPY . .
 RUN npm run build

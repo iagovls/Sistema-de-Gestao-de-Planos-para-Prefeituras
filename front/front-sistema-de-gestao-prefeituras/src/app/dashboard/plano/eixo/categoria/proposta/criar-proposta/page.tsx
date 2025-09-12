@@ -6,31 +6,18 @@ import PrefeituraTitle from "@/app/components/prefeituraTitle";
 import Title from "@/app/components/title";
 import { usePrefeituras } from "@/app/hooks/usePropostas";
 import { useSearchParams } from "next/navigation";
-import { useState, useRef } from "react";
-
-interface Prefeitura {
-  id: number;
-  name: string;
-}
-
-interface Plano {
-  titulo: string;
-  id: number;
-}
-interface Eixo {
-  titulo: string;
-  id: number;
-}
-interface Categoria {
-  titulo: string;
-  id: number;
-}
-interface OrgaoGestor {
-  titulo: string;
-  id: number;
-}
+import { useState, useRef, Suspense } from "react";
+import { Prefeitura, Plano, Eixo, Categoria, OrgaoGestor } from "@/app/types/proposta";
 
 export default function CriarProposta() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <CriarPropostaContent />
+    </Suspense>
+  )
+}
+
+function CriarPropostaContent() {
   const searchParams = useSearchParams();
   const prefeituraId = Number(searchParams.get("prefeituraId"));
 

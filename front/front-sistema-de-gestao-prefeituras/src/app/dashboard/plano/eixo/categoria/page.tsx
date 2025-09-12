@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { usePropostas, usePrefeituras } from "@/app/hooks/usePropostas";
 import PrefeituraTitle from "@/app/components/prefeituraTitle";
@@ -9,6 +9,14 @@ import Title from "@/app/components/title";
 import { Proposta, Prefeitura } from "@/app/types/proposta";
 
 export default function Propostas() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <PropostasContent />
+    </Suspense>
+  )
+}
+
+function PropostasContent() {
   const searchParams = useSearchParams();
 
   const prefeituraId = Number(searchParams.get("prefeituraId"));

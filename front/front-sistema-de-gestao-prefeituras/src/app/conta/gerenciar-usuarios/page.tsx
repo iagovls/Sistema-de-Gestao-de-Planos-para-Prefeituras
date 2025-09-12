@@ -1,25 +1,25 @@
 "use client";
 
 import Title from "@/app/components/title";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import BotaoIncluir from "@/app/components/botoes/botaoIncluir";
 import PopUpConfirmation from "@/app/components/popupConfirmation";
-
-// interface User com nome e email
-interface User {
-  id: string;
-  completeName: string;
-  email: string;
-  role: string;
-}
+import { Erro, User } from "@/app/types/proposta";
 
 export default function GerenciarUsuarios() {
-  // Estado para armazenar a lista de usuários
-  // e o erro, se houver
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <GerenciarUsuariosContent />
+    </Suspense>
+  )
+}
+
+function GerenciarUsuariosContent() {
+
 
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [erro, setErro] = useState<string | null>(null);
+  const [erro,  setErro] = useState<Erro | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export default function GerenciarUsuarios() {
     if (!userToDelete) return;
     const token = localStorage.getItem("token");
     if (!token) {
-      setErro("Token não encontrado");
+      setErro({ message: "Token não encontrado" });
       setShowModal(false);
       return;
     }
@@ -58,8 +58,9 @@ export default function GerenciarUsuarios() {
       }
       setSuccessMsg("Usuário excluído com sucesso!");
       setUsers(users.filter((user) => user.id !== userToDelete.id));
-    } catch (error: any) {
-      setErro(error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Erro desconhecido ao deletar usuário";
+      setErro({ message });
     } finally {
       setShowModal(false);
       setUserToDelete(null);
@@ -72,7 +73,7 @@ export default function GerenciarUsuarios() {
         const token = localStorage.getItem("token");
 
         if (!token) {
-          setErro("Token não encontrado");
+          setErro({ message: "Token não encontrado" });
           return;
         }
 
@@ -90,13 +91,14 @@ export default function GerenciarUsuarios() {
         const data = await res.json();
 
         if (data.length === 0) {
-          setErro("Nenhum usuário encontrado");
+          setErro({ message: "Nenhum usuário encontrado" });
           return;
         }
         setUsers(data);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Erro ao buscar usuário:", error);
-        setErro(error.message);
+        const message = error instanceof Error ? error.message : "Erro desconhecido ao buscar usuários";
+        setErro({ message });
       }
     };
 
@@ -107,13 +109,13 @@ export default function GerenciarUsuarios() {
       <Title titulo={"Gerenciar usuários"} />
       
       <button onClick={handleIncluirUsuario} className="mb-4">
-          <BotaoIncluir titulo="usuário" />
-          {}
+          <BotaoIncluir titulo="usuário" onClick={handleIncluirUsuario} />
+          {erro && <div className="text-red-600">{erro.message}</div>}
       </button>
       
 
       <div className="md:w-96 gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5 mt-5">
-        {erro && <div className="text-red-600">{erro}</div>}
+        {erro && <div className="text-red-600">{erro.message}</div>}
         {isLoading && <div>Carregando...</div>}
 
         {users &&

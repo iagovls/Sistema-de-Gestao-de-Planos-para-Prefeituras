@@ -4,62 +4,21 @@ import BotaoComun from "@/app/components/botoes/botaoComun";
 import PopUpConfirmation from "@/app/components/popupConfirmation";
 import PrefeituraTitle from "@/app/components/prefeituraTitle";
 import Title from "@/app/components/title";
-import { usePrefeituras, historicoProposta } from "@/app/hooks/usePropostas";
+import { usePrefeituras, useHistoricoProposta } from "@/app/hooks/usePropostas";
 import { useSearchParams } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { Proposta, PropostaSnapshot, Prefeitura, Plano, Eixo, Categoria, OrgaoGestor } from "@/app/types/proposta";
 
-interface Prefeitura {
-  id: number;
-  name: string;
-}
-
-interface Proposta {
-  id: number;
-  titulo: string;
-  plano: Plano;
-  eixo: Eixo;
-  categoria: Categoria;
-  orgaoGestor: OrgaoGestor; 
-  status: string;
-  meta: string;
-  motivo: string;
-  metaPermanente: boolean;
-  ativa: boolean;
-}
-
-interface PropostaSnapshot {
-  id: number;
-  titulo: string;
-  meta: string;
-  planoTitulo: string;
-  eixoTitulo: string;
-  categoriaTitulo: string;
-  orgaoGestorTitulo: string;
-  status: string;
-  motivo: string;
-  modificadoPor: string;
-  dataModificacao: string;
-  metaPermanente: boolean;
-}
-
-interface Plano {
-  titulo: string;
-  id: number;
-}
-interface Eixo {
-  titulo: string;
-  id: number;
-}
-interface Categoria {
-  titulo: string;
-  id: number;
-}
-interface OrgaoGestor {
-  titulo: string;
-  id: number;
-}
 
 export default function EditarProposta() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <EditarPropostaContent />
+    </Suspense>
+  )
+}
+
+function EditarPropostaContent() {
   const searchParams = useSearchParams();
   const prefeituraId = Number(searchParams.get("prefeituraId"));
   const propostaId = Number(searchParams.get("propostaId"));
@@ -68,7 +27,7 @@ export default function EditarProposta() {
     propostasSnapshots,
     isLoading: isLoadingSnapshots,
     isError: isErrorSnapshots,
-  } = historicoProposta(propostaId);
+  } = useHistoricoProposta(propostaId);
   const { prefeituras, error } = usePrefeituras();
   const prefeitura = prefeituras?.find(
     (p: Prefeitura) => p.id === prefeituraId
@@ -78,7 +37,6 @@ export default function EditarProposta() {
   const [showCancel, setShowCancel] = useState(false);
   const [showActivate, setShowActivate] = useState(false);
   const [proposta, setProposta] = useState<Proposta | null>(null);
-  console.log("proposta: ", proposta);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [metaPermanente, setMetaPermanente] = useState(false);
@@ -111,11 +69,11 @@ export default function EditarProposta() {
     }
   };
 
-  useEffect(() => {
+  
     if (propostaId) {
       fetchProposta();
     }
-  }, [propostaId]);
+ 
 
   const [formData, setFormData] = useState({
     titulo: "",
@@ -131,8 +89,7 @@ export default function EditarProposta() {
     prefeituraId: prefeituraId,
   });
 
-console.log("meta: ", formData.meta);
-console.log("metaPermanente: ", formData.metaPermanente);
+
 
   useEffect(() => {
     if (proposta) {
@@ -155,9 +112,8 @@ console.log("metaPermanente: ", formData.metaPermanente);
         motivo: "",
         prefeituraId: prefeituraId,
       });
-      console.log("formData: ", formData);
     }
-  }, [proposta]);
+  }, [proposta, prefeituraId]);
 
   const formRef = useRef<HTMLFormElement>(null);
 

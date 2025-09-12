@@ -5,16 +5,23 @@ import PopUpConfirmation from "@/app/components/popupConfirmation";
 import PrefeituraTitle from "@/app/components/prefeituraTitle";
 import Title from "@/app/components/title";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
 
 
 
 
 export default function CriarPlano() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <CriarPlanoContent />
+    </Suspense>
+  );
+}
+
+function CriarPlanoContent() {
   const searchParams = useSearchParams();
   const prefeituraId = Number(searchParams.get("prefeituraId"));
   const router = useRouter();
-  
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,8 +29,6 @@ export default function CriarPlano() {
     prefeituraId: prefeituraId,
   });
   const formRef = useRef<HTMLFormElement>(null);
-
-  
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) {
@@ -63,6 +68,7 @@ export default function CriarPlano() {
       alert("Ocorreu um erro ao criar o plano.");
     }
   };
+
   return (
     <div className="flex flex-col items-center gap-5">
       <PrefeituraTitle />

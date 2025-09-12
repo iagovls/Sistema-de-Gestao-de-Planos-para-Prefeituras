@@ -98,7 +98,7 @@ export default function Monitoramento() {
       orgaosGestores,
       status,
     };
-  }, [propostas]);
+  }, [propostas, listaPrefeituras]);
 
   // Filtrar propostas
   const propostasFiltradas = useMemo(() => {

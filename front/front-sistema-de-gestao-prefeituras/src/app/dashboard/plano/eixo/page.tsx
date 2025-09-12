@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { usePropostas, usePrefeituras } from "@/app/hooks/usePropostas";
 import PrefeituraTitle from "@/app/components/prefeituraTitle";
@@ -20,7 +20,15 @@ interface CategoriaData {
   vencidas: number;
 }
 
-export default function Categorias() {
+export default function Categorias(){
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <CategoriasContent />
+    </Suspense>
+  )
+}
+
+function CategoriasContent() {
   const searchParams = useSearchParams();
   
   const prefeituraId = Number(searchParams.get("prefeituraId"));
