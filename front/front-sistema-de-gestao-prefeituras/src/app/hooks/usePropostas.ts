@@ -17,7 +17,7 @@ async function fetcher(url:string) {
 export function usePropostas(prefeituraId?: number) {
   const shouldFetch = prefeituraId !== undefined;
   const { data, error } = useSWR(
-    shouldFetch ? `http://localhost:8080/propostas/por-prefeitura?prefeituraId=${prefeituraId}` : null,
+    shouldFetch ? `${process.env.NEXT_PUBLIC_API_URL}/propostas/por-prefeitura?prefeituraId=${prefeituraId}` : null,
     fetcher
   );
   
@@ -32,7 +32,7 @@ export function usePropostas(prefeituraId?: number) {
 export function useHistoricoProposta(propostaId?: number) {
   const shouldFetch = propostaId !== undefined;
   const { data, error } = useSWR(
-    shouldFetch ? `http://localhost:8080/propostas/historico/${propostaId}` : null,
+    shouldFetch ? `${process.env.NEXT_PUBLIC_API_URL}/propostas/historico/${propostaId}` : null,
     fetcher
   );
   return {
@@ -44,7 +44,7 @@ export function useHistoricoProposta(propostaId?: number) {
 
 // Hook para buscar todas as propostas sem filtro
 export function useTodasPropostas() {
-  const { data, error } = useSWR("http://localhost:8080/propostas/todas", fetcher);
+  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/propostas/todas`, fetcher);
 
   return {
     propostas: data,
@@ -54,7 +54,7 @@ export function useTodasPropostas() {
 }
 
 export function usePrefeituras() {
-  const { data, error } = useSWR("http://localhost:8080/prefeituras", fetcher);
+  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/prefeituras`, fetcher);
   return {
     prefeituras: data,
     isLoading: !data && !error,

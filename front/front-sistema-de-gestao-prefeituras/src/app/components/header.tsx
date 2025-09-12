@@ -18,7 +18,7 @@ export function Header() {
 
         
         // Busca o nome do usuário na API
-        fetch("http://localhost:8080/auth/me", {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

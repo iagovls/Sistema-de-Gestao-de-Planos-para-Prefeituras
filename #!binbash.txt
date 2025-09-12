@@ -1,6 +1,5 @@
 #!/bin/bash
-sudo yum update -y
-sudo yum install -y docker git
+sudo yum update -y && sudo yum install -y docker git
 
 # Instalar Docker Compose
 sudo mkdir -p /usr/local/lib/docker/cli-plugins
@@ -8,8 +7,7 @@ sudo curl -L https://github.com/docker/compose/releases/download/v2.39.2/docker-
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # Iniciar Docker
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo systemctl start docker && sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # Clonar o repositório
@@ -29,26 +27,32 @@ cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 # Criar o docker-compose.yml
 cat <<EOF > docker-compose.yml
 services:
-  frontend:
-    build: ./front/front-sistema-de-gestao-prefeituras
+  nginx:
+    build: ./nginx
     ports:
-      - "80:3000"
+      - "80:80"
     restart: always
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    build: ./front/front-sistema-de-gestao-prefeituras    
+    restart: always
+    environment:      
+      - NEXT_PUBLIC_API_URL=http://localhost/api
     depends_on:
       - backend
 
   backend:
-    build: ./www
-    ports:
-      - "8080:8080"
+    build: ./www    
     restart: always
-    environment: 
+    environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com:3306/propostasDB
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=WQpB6apqNwsb2LcY0ys5
       - SPRING_PROFILES_ACTIVE=prod
+
 EOF
 
 # Criar Dockerfile para o frontend

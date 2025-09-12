@@ -1,0 +1,26 @@
+services:
+  # Adiciona o serviço do MySQL apenas para o ambiente local
+  mysql:
+    image: mysql:8.0
+    container_name: localDB-test
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: propostasDB
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      # Monta o volume nomeado para persistir os dados do banco
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+  # Adiciona uma dependência no backend para que ele espere o mysql iniciar
+  backend:
+    depends_on:
+      - mysql
+
+# Define um volume nomeado para que os dados do MySQL não se percam
+# quando o contêiner for recriado
+volumes:
+  mysql-data:

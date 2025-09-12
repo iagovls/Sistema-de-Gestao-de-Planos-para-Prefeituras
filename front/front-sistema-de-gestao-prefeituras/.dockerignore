@@ -1,0 +1,23 @@
+#Dependências locais, não devem ir para a imagem
+
+node_modules
+
+#Arquivos de log do NPM
+npm-debug.log
+
+#Pasta de build do Next.js (será gerada dentro do contêiner)
+.next
+
+#Arquivos do Docker
+Dockerfile
+.dockerignore
+
+#Configurações de IDE e sistema
+.vscode
+.idea
+*.suo
+.ntvs
+*.njsproj
+*.sln
+.git
+.gitignore
