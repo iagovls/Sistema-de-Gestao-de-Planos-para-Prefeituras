@@ -50,7 +50,7 @@ function EditarPropostaContent() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/propostas/${propostaId}`
+        `http://localhost:8080/api/propostas/${propostaId}`
       );
 
       if (!response.ok) {

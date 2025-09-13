@@ -19,7 +19,7 @@ import com.planmanager.www.repositories.PrefeituraRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/orgaos-gestores")
+@RequestMapping("/api/orgaos-gestores")
 public class OrgaosGestoresController {
 
     @Autowired 

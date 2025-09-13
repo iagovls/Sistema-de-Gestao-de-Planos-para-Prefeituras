@@ -20,7 +20,7 @@ import com.planmanager.www.repositories.PrefeituraRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/planos")
+@RequestMapping("/api/planos")
 public class PlanosController {
 
     @Autowired

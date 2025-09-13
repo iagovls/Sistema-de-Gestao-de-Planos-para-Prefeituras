@@ -19,7 +19,7 @@ import com.planmanager.www.repositories.PrefeituraRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/eixos")   
+@RequestMapping("/api/eixos")   
 public class EixosController {
 
     @Autowired

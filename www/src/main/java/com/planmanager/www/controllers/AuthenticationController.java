@@ -43,7 +43,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin
-@RequestMapping("auth")
+@RequestMapping("/api/auth")
 @Tag(name = "Users", description = "User management API")
 @SecurityRequirement(name = "bearerAuth")
 public class AuthenticationController {

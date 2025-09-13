@@ -34,7 +34,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
-@RequestMapping("propostas")
+@RequestMapping("/api/propostas")
 public class PropostasController {
 
         @Autowired

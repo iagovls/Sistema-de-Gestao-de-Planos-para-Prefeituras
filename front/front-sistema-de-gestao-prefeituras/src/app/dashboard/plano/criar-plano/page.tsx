@@ -45,7 +45,7 @@ function CriarPlanoContent() {
     try {
       // Enviar alteração para o back-end (editar proposta)
       const response = await fetch(
-        `http://localhost:8080/planos`,
+        `http://localhost:8080/api/planos`,
         {
           method: "POST",
           headers: {

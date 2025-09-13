@@ -19,7 +19,7 @@ public class PropostaSnapshotsController {
     @Autowired
     private PropostaSnapshotRepository propostaSnapshotRepository;
 
-    @GetMapping("/{propostaId}")
+    @GetMapping("/api/{propostaId}")
     public List<PropostaSnapshotDTO> getHistoricoProposta(@PathVariable Long propostaId) {
         return propostaSnapshotRepository.findByPropostaId(propostaId).stream()
                 .map(snapshot -> new PropostaSnapshotDTO(

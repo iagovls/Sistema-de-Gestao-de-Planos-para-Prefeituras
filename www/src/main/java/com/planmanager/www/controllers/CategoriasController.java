@@ -19,7 +19,7 @@ import com.planmanager.www.repositories.PrefeituraRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/categorias")
+@RequestMapping("/api/categorias")
 public class CategoriasController {
 
     @Autowired

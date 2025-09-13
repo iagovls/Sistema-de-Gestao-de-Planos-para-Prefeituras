@@ -20,7 +20,7 @@ import com.planmanager.www.model.prefeituras.dto.PrefeituraDTO;
 import com.planmanager.www.repositories.PrefeituraRepository;
 
 @RestController
-@RequestMapping("/prefeituras")
+@RequestMapping("/api/prefeituras")
 public class PrefeiturasController {
 
     @Autowired
