@@ -24,79 +24,11 @@ git clone https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-d
 
 cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 
-# Criar o docker-compose.yml
-cat <<EOF > docker-compose.yml
-services:
-  nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-    restart: always
-    depends_on:
-      - frontend
-      - backend
 
-  frontend:
-    build: ./front/front-sistema-de-gestao-prefeituras    
-    restart: always
-    environment:      
-      - NEXT_PUBLIC_API_URL=http://localhost/api
-    depends_on:
-      - backend
 
-  backend:
-    build: ./www    
-    restart: always
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com:3306/propostasDB
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=WQpB6apqNwsb2LcY0ys5
-      - SPRING_PROFILES_ACTIVE=prod
 
-EOF
 
-# Criar Dockerfile para o frontend
-cat <<EOF > front/front-sistema-de-gestao-prefeituras/Dockerfile
-FROM node:latest
 
-WORKDIR /front-sistema-de-gestao-prefeituras
-
-COPY package*.json ./
-RUN rm -rf node_modules
-RUN npm i
-
-COPY . .
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
-EOF
-
-# Criar Dockerfile para o backend
-cat <<EOF > www/Dockerfile
-# Etapa de build
-FROM maven:3.9.9-eclipse-temurin-21 AS build
-WORKDIR /www
-
-# Baixa dependências em cache
-COPY pom.xml .
-RUN mvn -B -q -DskipTests dependency:go-offline
-
-# Copia código-fonte e empacota
-COPY src ./src
-RUN mvn -B -DskipTests package
-
-# Etapa de runtime
-FROM openjdk:21-jdk-slim
-WORKDIR /www
-
-# Copia o JAR gerado na etapa de build
-COPY --from=build /www/target/*.jar app.jar
-
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
-EOF
 
 # Build do backend localmente (se necessário)
 # cd www
@@ -105,7 +37,7 @@ EOF
 # cd ..
 
 # Iniciar os serviços
-sudo docker compose up -d
+sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Configurar logs
 echo "Deploy completed at $(date)" >> /var/log/deploy.log
