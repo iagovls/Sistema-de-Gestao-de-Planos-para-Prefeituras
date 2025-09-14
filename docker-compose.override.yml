@@ -15,6 +15,22 @@ services:
       - mysql-data:/var/lib/mysql
     restart: unless-stopped
 
+  # Adiciona o serviço do frontend
+  frontend:
+    build:
+      context: ./front/front-sistema-de-gestao-prefeituras
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost/api
+    # A porta agora é acessada apenas pela rede interna do Docker, através do Nginx
+    # ports:
+    #   - "80:3000" 
+    restart: always
+    environment:
+      # O frontend agora fala com a API através do Nginx
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+    depends_on:
+      - backend
+
   # Adiciona uma dependência no backend para que ele espere o mysql iniciar
   backend:
     depends_on:

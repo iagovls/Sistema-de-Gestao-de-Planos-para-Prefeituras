@@ -45,7 +45,7 @@ function GerenciarUsuariosContent() {
     }
     try {
       const res = await fetch(
-        `http://localhost:8080/auth/delete?id=${userToDelete.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/delete?id=${userToDelete.id}`,
         {
           method: "DELETE",
           headers: {

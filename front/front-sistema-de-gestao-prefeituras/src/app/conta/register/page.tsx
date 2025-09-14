@@ -20,7 +20,7 @@ export default function Register() {
             setMessage("");
         } 
         try {
-            const response = await fetch("http://localhost:8080/auth/register", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,6 +55,8 @@ export default function Register() {
                     <h1 className="text-red-500">{message}</h1>
                     <h1 className="text-start font-semibold">Nome</h1>
                     <input
+                        title="Nome de usuário"
+                        placeholder="Digite seu nome de usuário"
                         type="text"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
@@ -63,6 +65,8 @@ export default function Register() {
                     />
                     <h1 className="text-start font-semibold">E-mail</h1>
                     <input
+                        title="Email"
+                        placeholder="Digite seu email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -71,6 +75,8 @@ export default function Register() {
                     />
                     <h1 className="text-start font-semibold">Senha</h1>
                     <input
+                        title="Senha"
+                        placeholder="Digite sua senha"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -79,6 +85,8 @@ export default function Register() {
                     />
                     <h1 className="text-start font-semibold">Confirmar senha</h1>
                     <input
+                        title="Confirmar senha"
+                        placeholder="Digite sua senha novamente"
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}

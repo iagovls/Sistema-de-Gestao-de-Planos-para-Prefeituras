@@ -24,7 +24,9 @@ git clone https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-d
 
 cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 
-
+# sudo dnf install mariadb105 -y
+# WQpB6apqNwsb2LcY0ys5
+# create database propostasDB
 
 
 
