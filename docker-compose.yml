@@ -28,6 +28,7 @@ services:
     # A porta agora é acessada apenas pela rede interna do Docker, através do Nginx
     # ports:
     #  - "8080:8080"
+    container_name: backend
     restart: always
     env_file:
       - .env.dev
