@@ -49,8 +49,14 @@ function EditarPropostaContent() {
   const fetchProposta = async () => {
     try {
       setIsLoading(true);
+      const token = localStorage.getItem("token");
+      const headers: HeadersInit = {};
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/propostas/${propostaId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/propostas/${propostaId}`,
+        { headers }
       );
 
       if (!response.ok) {
