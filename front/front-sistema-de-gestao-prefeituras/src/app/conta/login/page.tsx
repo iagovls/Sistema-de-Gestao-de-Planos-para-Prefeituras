@@ -15,13 +15,16 @@ export default function Login() {
         // Use DOMPurify to sanitize email and password before sending
         const cleanEmail = DOMPurify.sanitize(email);
         const cleanPassword = DOMPurify.sanitize(password);
+        console.log("credentials: ", cleanEmail, cleanPassword);
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json",                    
                 },
                 body: JSON.stringify({ email: cleanEmail, password: cleanPassword }),
+                credentials: "include",
+                mode: "cors"
             });
 
             if (response.ok) {
