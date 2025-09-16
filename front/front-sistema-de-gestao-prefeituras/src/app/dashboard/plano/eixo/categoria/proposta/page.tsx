@@ -50,7 +50,7 @@ function EditarPropostaContent() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/propostas/${propostaId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/propostas/${propostaId}`
       );
 
       if (!response.ok) {

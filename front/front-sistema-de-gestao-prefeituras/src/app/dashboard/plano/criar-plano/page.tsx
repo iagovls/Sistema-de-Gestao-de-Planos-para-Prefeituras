@@ -45,7 +45,7 @@ function CriarPlanoContent() {
     try {
       // Enviar alteração para o back-end (editar proposta)
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/planos`,
+        `${process.env.NEXT_PUBLIC_API_URL}/planos`,
         {
           method: "POST",
           headers: {

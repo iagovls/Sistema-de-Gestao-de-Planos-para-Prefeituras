@@ -91,7 +91,7 @@ function CriarPropostaContent() {
     try {
       // Enviar alteração para o back-end (editar proposta)
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/propostas`,
+        `${process.env.NEXT_PUBLIC_API_URL}/propostas`,
         {
           method: "POST",
           headers: {
