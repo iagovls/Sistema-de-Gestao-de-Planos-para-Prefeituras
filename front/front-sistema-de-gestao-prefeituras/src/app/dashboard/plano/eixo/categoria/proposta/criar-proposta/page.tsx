@@ -91,7 +91,7 @@ function CriarPropostaContent() {
     try {
       // Enviar alteração para o back-end (editar proposta)
       const response = await fetch(
-        `http://localhost:8080/api/propostas`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/propostas`,
         {
           method: "POST",
           headers: {

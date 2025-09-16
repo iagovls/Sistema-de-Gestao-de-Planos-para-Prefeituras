@@ -50,7 +50,7 @@ function EditarPropostaContent() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/api/propostas/${propostaId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/propostas/${propostaId}`
       );
 
       if (!response.ok) {
@@ -157,7 +157,7 @@ function EditarPropostaContent() {
     try {
       // Enviar alteração para o back-end (editar proposta)
       const response = await fetch(
-        `http://localhost:8080/propostas?id=${propostaId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/propostas?id=${propostaId}`,
         {
           method: "PUT",
           headers: {
