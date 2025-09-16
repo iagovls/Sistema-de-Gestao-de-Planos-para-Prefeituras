@@ -25,8 +25,9 @@ git clone https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-d
 cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 
 # sudo dnf install mariadb105 -y
+# mysql -h database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
 # WQpB6apqNwsb2LcY0ys5
-# create database propostasDB
+# create database propostasDB;
 
 
 
@@ -39,7 +40,10 @@ cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 # cd ..
 
 # Iniciar os serviços
+cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+
 
 # Configurar logs
 echo "Deploy completed at $(date)" >> /var/log/deploy.log
