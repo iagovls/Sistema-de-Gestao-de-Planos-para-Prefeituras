@@ -31,6 +31,7 @@ export default function Login() {
                 window.location.href = "/"; 
             } else {
                 alert("Login failed. Please check your credentials.");
+                console.error("Login error:", response.status);
             }
         } catch (error) {
             console.error("Login error:", error);
