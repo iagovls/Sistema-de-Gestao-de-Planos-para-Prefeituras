@@ -24,10 +24,20 @@ git clone https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-d
 
 cd Sistema-de-Gestao-de-Planos-para-Prefeituras
 
-# sudo dnf install mariadb105 -y
-# mysql -h database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
-# WQpB6apqNwsb2LcY0ys5
-# create database propostasDB;
+sudo dnf install mariadb105 -y
+
+
+# Crie o arquivo SQL
+echo "CREATE DATABASE IF NOT EXISTS propostasDB;" > /tmp/setup.sql
+
+# Execute o comando e passe a senha com -p seguido da senha (sem espaço)
+mysql -h database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com \
+  -P 3306 \
+  -u admin \
+  -pWQpB6apqNwsb2LcY0ys5 < /tmp/setup.sql
+
+# Opcional: Remova o arquivo temporário por segurança
+rm /tmp/setup.sql
 
 
 
