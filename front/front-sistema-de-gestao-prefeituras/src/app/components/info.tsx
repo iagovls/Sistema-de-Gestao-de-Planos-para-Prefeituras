@@ -45,7 +45,7 @@ export default function Info(
                         return (
                             <div
                                 key={id}
-                                className="w-full bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-102"
+                                className="md:w-full w-11/12 bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-102"
                                 onClick={() => onClick(eixo)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {

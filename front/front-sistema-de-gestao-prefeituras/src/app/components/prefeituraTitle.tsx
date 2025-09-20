@@ -88,27 +88,27 @@ export default function PrefeituraTitle() {
             <div className="grid grid-cols-2 gap-2 justify-center text-center">
                 {/* Nome da prefeitura e logos */}
 
-                <h1 className="col-span-2 text-center text-4xl text-black">
-                    Prefeitura de <strong>{prefeitura?.name}</strong>
+                <h1 className="col-span-2 p-2 text-center md:text-4xl text-2xl text-black">
+                    Prefeitura de <br /> <strong>{prefeitura?.name}</strong>
                 </h1>
                 <Image
                     src={prefeitura?.logoPrefeitura || "/noImage.png"}
                     alt={`Logo Prefeitura Municipal de ${prefeituraName}`}
                     width={100}
                     height={100}
-                    className="justify-self-end"
+                    className="justify-self-end w-20 md:w-auto"
                 />
                 <Image
                     src={prefeitura?.logoCMDCA || "/noImage.png"}
                     alt={`Logo CMDCA ${prefeituraName}`}
                     width={100}
                     height={100}
-                    className="justify-self-start"
+                    className="justify-self-start w-20 md:w-auto"
                 />
 
             </div>
 
-            <div className={planoName ? `flex flex-col items-start w-auto h-auto bg-white rounded-2xl px-5 py-2 mb-5 shadow-sm` : ``}
+            <div className={planoName ? `flex flex-col items-start md:w-auto w-11/12 h-auto bg-white rounded-2xl px-5 py-2 mb-5 shadow-sm` : ``}
             >
                 {plano()}
                 {eixo()}

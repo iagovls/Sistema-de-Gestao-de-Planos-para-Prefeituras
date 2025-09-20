@@ -45,7 +45,7 @@ export default function Login() {
     return (
         <main className="flex flex-col justify-center items-center w-full gap-5">
           
-            <div className="md:w-96 text-center bg-white rounded-2xl shadow-sm w-10/12 h-auto p-10">
+            <div className="md:w-96 text-center bg-white rounded-2xl shadow-sm w-10/12 h-auto md:p-10 p-5 mt-10">
                 <h1 className="pb-10">Acesso apenas para <strong className="text-verde">administradores</strong></h1>
                 <form onSubmit={handleSubmit} className="flex flex-col mb-5">
                     <h1 className="text-start font-semibold">E-mail</h1>

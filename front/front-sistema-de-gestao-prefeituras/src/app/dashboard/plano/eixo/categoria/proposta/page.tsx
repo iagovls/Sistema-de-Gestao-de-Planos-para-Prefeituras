@@ -46,39 +46,42 @@ function EditarPropostaContent() {
   const categorias: Categoria[] = prefeitura?.categorias || [];
   const orgaos: OrgaoGestor[] = prefeitura?.orgaosGestores || [];
 
-  const fetchProposta = async () => {
-    try {
-      setIsLoading(true);
-      const token = localStorage.getItem("token");
-      const headers: HeadersInit = {};
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/propostas/${propostaId}`,
-        { headers }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setProposta(data);
-      setMetaPermanente(data.metaPermanente || false);
-      setIsError(false);
-    } catch (error) {
-      console.error("Erro ao buscar proposta:", error);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   
-    if (propostaId) {
-      fetchProposta();
-    }
+  useEffect(() => {
+      const fetchProposta = async () => {
+        try {
+          setIsLoading(true);
+          const token = localStorage.getItem("token");
+          const headers: HeadersInit = {};
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/propostas/${propostaId}`,
+            { headers }
+          );
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+    
+          const data = await response.json();
+          setProposta(data);
+          setMetaPermanente(data.metaPermanente || false);
+          setIsError(false);
+        } catch (error) {
+          alert(error);
+          setIsError(true);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      if (propostaId) {
+        fetchProposta();
+      }
+    }, [propostaId])
  
 
   const [formData, setFormData] = useState({
@@ -156,7 +159,7 @@ function EditarPropostaContent() {
 
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Token não encontrado");
+      alert("Usuário não autenticado");
       return;
     }
 
@@ -173,18 +176,16 @@ function EditarPropostaContent() {
           body: JSON.stringify(formData),
         }
       );
-      console.log("formData: ", formData);
 
       if (response.ok) {
         alert("Proposta atualizada com sucesso!");
-        await fetchProposta(); // Recarrega os dados atualizados
+         // Recarrega os dados atualizados
       } else {
         const error = await response.text();
         alert("Erro ao atualizar proposta: " + error);
       }
     } catch (error) {
-      console.error("Erro ao atualizar proposta:", error);
-      alert("Ocorreu um erro ao atualizar a proposta.");
+      alert(error);
     }
   };
 
@@ -226,7 +227,7 @@ function EditarPropostaContent() {
       <Title titulo={"Alterar Proposta"} />
       <form
         ref={formRef}
-        className="flex flex-col w-6/12 h-auto bg-white shadow-sm p-10 rounded-2xl mb-5"
+        className="flex flex-col md:w-6/12 w-11/12 h-auto bg-white shadow-sm md:p-10 p-3  rounded-2xl mb-5"
         onSubmit={handleSubmit}
       >
         <label className="font-bold text-lg pl-4">Proposta</label>
@@ -392,8 +393,8 @@ function EditarPropostaContent() {
           rows={3}
           required
         />
-              <div className="flex justify-between mt-6 gap-4">
-                <div onClick={() => {
+              <div className="flex justify-between text-sm mt-5">
+                <div className="mt-5" onClick={() => {
                   if (!metaPermanente && formData.meta == "") {
                     alert("Se a meta não for permanente, informe a meta.")
                     setShowConfirmation(false)
@@ -405,8 +406,8 @@ function EditarPropostaContent() {
                 </div>
                 {/* Se proposta desativada, botao ativar proposta, se ativa, botao desativar proposta, status desativada em vermelho, ativa em verde */}
                 {!proposta?.ativa ? (
-                  <div className="flex items-center gap-4">
-                    <h1 className="text-xl font-bold mt-5">
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-sm font-bold">
                       Proposta: <span className="text-vermelho">Desativada</span>
                     </h1>
                     <div onClick={() => handleConfirmActivate()}>
@@ -414,8 +415,8 @@ function EditarPropostaContent() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-4">
-                    <h1 className="text-lg font-bold mt-5">
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-sm font-bold">
                       Proposta: <span className="text-verde">Ativa</span>
                     </h1>
                     <div onClick={() => handleConfirmCancel()}>
@@ -450,7 +451,7 @@ function EditarPropostaContent() {
 
               try {
                 const response = await fetch(
-                  `http://localhost:8080/propostas?id=${propostaId}`,
+                  `${process.env.NEXT_PUBLIC_API_URL}/propostas?id=${propostaId}`,
                   {
                     method: "PUT",
                     headers: {
@@ -463,14 +464,13 @@ function EditarPropostaContent() {
 
                 if (response.ok) {
                   alert("Proposta desativada com sucesso!");
-                  await fetchProposta(); // Recarrega os dados
+                   // Recarrega os dados
                 } else {
                   const error = await response.text();
                   alert("Erro ao desativar proposta: " + error);
                 }
               } catch (error) {
-                console.error("Erro ao desativar proposta:", error);
-                alert("Ocorreu um erro ao desativar a proposta.");
+                alert(error);
               }
 
               setShowCancel(false);
@@ -496,7 +496,7 @@ function EditarPropostaContent() {
 
               try {
                 const response = await fetch(
-                  `http://localhost:8080/propostas?id=${propostaId}`,
+                  `${process.env.NEXT_PUBLIC_API_URL}/propostas?id=${propostaId}`,
                   {
                     method: "PUT",
                     headers: {
@@ -509,14 +509,13 @@ function EditarPropostaContent() {
 
                 if (response.ok) {
                   alert("Proposta ativada com sucesso!");
-                  await fetchProposta(); // Recarrega os dados
+                  // Recarrega os dados
                 } else {
                   const error = await response.text();
                   alert("Erro ao ativar proposta: " + error);
                 }
               } catch (error) {
-                console.error("Erro ao ativar proposta:", error);
-                alert("Ocorreu um erro ao ativar a proposta.");
+                alert(error);
               }
 
               setShowActivate(false);
@@ -536,7 +535,7 @@ function EditarPropostaContent() {
           Ocorreu um erro ao carregar o histórico.
         </div>
       )}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col items-center gap-4">
         {!isLoadingSnapshots && propostasSnapshots.length == 0 ? (
           <div className="w-auto h-auto flex items-center justify-center bg-white shadow-sm p-3 rounded-2xl mb-5">
             Nenhum histórico encontrado
@@ -546,7 +545,7 @@ function EditarPropostaContent() {
           propostasSnapshots.sort((a: PropostaSnapshot, b: PropostaSnapshot) => new Date(b.dataModificacao).getTime() - new Date(a.dataModificacao).getTime()).map((snapshot: PropostaSnapshot, index: number) => (
             <div
               key={index}
-              className="bg-white p-4 rounded-lg shadow-md"
+              className="bg-white md:w-auto w-11/12 p-4 rounded-lg shadow-md"
             >
               <p className="font-bold">{index == propostasSnapshots.length - 1 ? `Proposta criada por ${
                 snapshot.modificadoPor

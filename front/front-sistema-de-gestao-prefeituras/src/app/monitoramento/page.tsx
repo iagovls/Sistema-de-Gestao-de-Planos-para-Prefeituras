@@ -1,5 +1,6 @@
 "use client";
 
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import { useState, useMemo, useEffect } from "react";
 import { usePrefeituras, useTodasPropostas } from "../hooks/usePropostas";
 import {
@@ -128,7 +129,7 @@ export default function Monitoramento() {
         proposta.titulo.toLowerCase().includes(filtros.pesquisa.toLowerCase());
       const matchMeta =
         !filtros.meta ||
-        (proposta.meta && proposta.meta.toString() === filtros.meta.trim());
+        (proposta.meta && proposta.meta.split("-")[0].toString() === filtros.meta.trim());
 
       return (
         matchPrefeitura &&
@@ -465,10 +466,7 @@ export default function Monitoramento() {
                   >
                     <td className="px-6 py-4 text-center whitespace-normal break-words min-w-[16rem]">
                       <div className="text-sm font-medium text-gray-900">
-                        {/* {proposta.titulo} */}Contratar e garantir a
-                        permanência de profissionais e coordenações em número
-                        suficiente, com garantia da autonomia, bem como a
-                        qualificação continuada, com base na NOB-RH-SUAS.
+                         {proposta.titulo}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center whitespace-nowrap">
@@ -505,17 +503,14 @@ export default function Monitoramento() {
                     </td>
                     <td className="px-6 py-4 text-center whitespace-normal min-w-[8rem]">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(
-                          proposta.meta.split("-")[0] >=
-                            new Date().getFullYear().toString()
-                            ? "Em Andamento"
-                            : proposta.meta.split("-")[0] <
-                              new Date().getFullYear().toString()
-                            ? "Vencida"
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor( proposta.status === "Concluída" ? "Concluída" :
+                          proposta.meta.split("-")[0] >= new Date().getFullYear().toString() ? "Em Andamento"
+                            : proposta.meta.split("-")[0] < new Date().getFullYear().toString() ? "Vencida"
                             : ""
                         )}`}
                       >
-                        {proposta.status === "Em Andamento" &&
+                        { proposta.status === "Concluída" ? "Concluída" :
+                        proposta.status === "Em Andamento" &&
                         proposta.meta >= new Date().getFullYear().toString()
                           ? "Em Andamento"
                           : proposta.status === "Em Andamento" &&
@@ -531,9 +526,9 @@ export default function Monitoramento() {
           </div>
 
           {/* Paginação */}
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+          <div className="bg-white px-4 py-3 flex md:flex-row flex-col gap-2 items-center justify-between border-t border-gray-200 sm:px-6">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex  items-center space-x-2">
                 <span className="text-sm text-gray-700">Itens por página:</span>
                 <select
                   title="Itens por página"
@@ -551,7 +546,7 @@ export default function Monitoramento() {
                 </select>
               </div>
               <div className="text-sm text-gray-700">
-                Mostrando {inicio + 1} a {Math.min(fim, totalItens)} de{" "}
+                {inicio + 1} a {Math.min(fim, totalItens)} de{" "}
                 {totalItens} resultados
               </div>
             </div>
@@ -562,7 +557,7 @@ export default function Monitoramento() {
                 disabled={paginaAtual === 1}
                 className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Anterior
+                <HiArrowNarrowLeft />
               </button>
 
               <div className="flex items-center space-x-1">
@@ -591,7 +586,7 @@ export default function Monitoramento() {
                 disabled={paginaAtual === totalPaginas}
                 className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Próxima
+                <HiArrowNarrowRight />
               </button>
             </div>
           </div>

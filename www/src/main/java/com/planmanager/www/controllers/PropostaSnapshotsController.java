@@ -8,18 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.planmanager.www.model.propostas.PropostaSnapshot;
 import com.planmanager.www.model.propostas.dto.PropostaSnapshotDTO;
 import com.planmanager.www.repositories.PropostaSnapshotRepository;
 
 @RestController
-@RequestMapping("/propostas/historico")
+@RequestMapping("/api/propostas/historico")
 public class PropostaSnapshotsController {
 
     @Autowired
     private PropostaSnapshotRepository propostaSnapshotRepository;
 
-    @GetMapping("/api/{propostaId}")
+    @GetMapping("/{propostaId}")
     public List<PropostaSnapshotDTO> getHistoricoProposta(@PathVariable Long propostaId) {
         return propostaSnapshotRepository.findByPropostaId(propostaId).stream()
                 .map(snapshot -> new PropostaSnapshotDTO(

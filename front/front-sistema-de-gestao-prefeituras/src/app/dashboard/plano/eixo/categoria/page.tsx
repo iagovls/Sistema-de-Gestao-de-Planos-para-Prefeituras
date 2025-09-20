@@ -97,7 +97,7 @@ function PropostasContent() {
               return (
                 <div
                   key={id}
-                  className="w-8/12 bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-101"
+                  className="md:w-8/12 w-11/12 bg-white shadow-sm rounded-2xl p-6 mt-6 hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-101"
                   onClick={() => handlePropostaClick(proposta)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -109,16 +109,16 @@ function PropostasContent() {
                   role="button"
                   aria-label={`Acessar dashboard do Plano ${""}`}
                 >
-                  <h2 className=" text-justify mb-10">{proposta.titulo}</h2>
-                  <div className="flex justify-between">
-                    <h1 className="text-azulclaro">
+                  <h2 className=" text-justify text-sm mb-10">{proposta.titulo}</h2>
+                  <div className="flex flex-col md:flex-row gap-2 justify-between">
+                    <h1 className="text-azulclaro text-sm">
                       <strong>Orgão Gestor: </strong>
                       {proposta.orgaoGestor.titulo}
                     </h1>
-                    <div className="flex gap-10">
+                    <div className="flex flex-col md:flex-row md:gap-10 gap-2">
                       <div className="flex items-center gap-3">
                         <h1 className="font-bold">Meta:</h1>
-                        <div className={`rounded-full bg-green-300 py-1 px-3`}>
+                        <div className={`rounded-full bg-green-300 py-1 px-3 ml-2.5`}>
                           { proposta.metaPermanente ? 
                           "Permanente" :
                           proposta.meta.substring(0, 4)}
@@ -132,7 +132,7 @@ function PropostasContent() {
                             ${statusColor(proposta.status === "Em Andamento" ? 
                             proposta.meta > new Date().getFullYear().toString() ? "Em Andamento" : "Vencida" :
                             proposta.status)}
-                            py-1 px-3
+                            py-1 px-3 w-max
                             `}
                         >
                           {proposta.status === "Em Andamento" ? 
