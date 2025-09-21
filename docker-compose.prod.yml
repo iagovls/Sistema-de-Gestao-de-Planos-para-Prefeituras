@@ -1,4 +1,13 @@
 services:
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        ENVIRONMENT: prod
+    depends_on:
+      - backend
+      # Não depende do frontend em produção
+  
   backend:
     env_file:
       - .env.prod

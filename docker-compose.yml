@@ -1,11 +1,14 @@
 services:
   nginx:
-    build: ./nginx
+    build: 
+      context: ./nginx
+      args:
+        ENVIRONMENT: dev
     ports:
       - "80:80"
     restart: always
     depends_on:
-      # - frontend
+      # - frontend (será adicionado no override para dev)
       - backend
 
   

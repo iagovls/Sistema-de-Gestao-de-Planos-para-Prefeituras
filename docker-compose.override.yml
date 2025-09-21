@@ -1,4 +1,8 @@
 services:
+
+  nginx:
+    depends_on:
+      - frontend
   # Adiciona o serviço do MySQL apenas para o ambiente local
   mysql:
     image: mysql:8.0
