@@ -3,7 +3,7 @@ services:
     build: 
       context: ./nginx
       args:
-        ENVIRONMENT: prod
+        ENVIRONMENT: dev
     ports:
       - "80:80"
     restart: always

@@ -34,7 +34,7 @@ public class PropostaSnapshotsController {
                     snapshot.getMetaPermanente(),
                     snapshot.getModificadoPor(),
                     snapshot.getDataModificacao()
-                ))
+                )).sorted((s1, s2) -> s2.dataModificacao().compareTo(s1.dataModificacao()))
                 .toList();
     }
 }

@@ -542,7 +542,7 @@ function EditarPropostaContent() {
           </div>
         ) : (
         // ordem decrescente
-          propostasSnapshots.sort((a: PropostaSnapshot, b: PropostaSnapshot) => new Date(b.dataModificacao).getTime() - new Date(a.dataModificacao).getTime()).map((snapshot: PropostaSnapshot, index: number) => (
+          propostasSnapshots.map((snapshot: PropostaSnapshot, index: number) => (
             <div
               key={index}
               className="bg-white md:w-auto w-11/12 p-4 rounded-lg shadow-md"
