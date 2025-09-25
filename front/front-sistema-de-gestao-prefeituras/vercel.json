@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://monitoramentocmdca.com.br/api/$1" }
+    { "source": "/api/(.*)", "destination": "https://api.monitoramentocmdca.com.br/api/$1" }
   ]
 }
