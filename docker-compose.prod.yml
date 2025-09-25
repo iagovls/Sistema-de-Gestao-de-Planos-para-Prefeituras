@@ -8,7 +8,8 @@ services:
       - backend
       # Não depende do frontend em produção
     volumes:
-      - /etc/letsencrypt/live/api.monitoramentocmdca.com.br/:/etc/letsencrypt/live/api.monitoramentocmdca.com.br/:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+
   
   backend:
     env_file:

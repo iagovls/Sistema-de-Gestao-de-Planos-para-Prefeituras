@@ -13,7 +13,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:3000", "http://localhost:3001", "https://monitoramentocmdca.com.br", "https://localhost") // coloque a porta do seu front
+                    .allowedOrigins(
+                        "http://localhost:3000",
+                        "http://localhost:3001",
+                        "https://monitoramentocmdca.com.br",
+                        "https://www.monitoramentocmdca.com.br",
+                        "https://localhost"
+                    ) // coloque a porta do seu front
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
