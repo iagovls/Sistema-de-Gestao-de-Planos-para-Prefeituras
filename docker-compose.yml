@@ -6,6 +6,7 @@ services:
         ENVIRONMENT: dev
     ports:
       - "80:80"
+      - "443:443"
     restart: always
     depends_on:
       # - frontend (será adicionado no override para dev)
