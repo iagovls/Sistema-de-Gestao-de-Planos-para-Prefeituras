@@ -77,7 +77,7 @@ function GerenciarUsuariosContent() {
           return;
         }
 
-        const res = await fetch("http://localhost:8080/auth/get-all", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/get-all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -131,7 +131,7 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
 
-        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getCompleteName(), user.getEmail(), user.getRole());
+        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getCompleteName(), user.getEmail(), user.getRole(), user.getPrefeitura() != null ? user.getPrefeitura().getId() : null);
         // var auth = SecurityContextHolder.getContext().getAuthentication();
         // boolean userIsNull = auth.getPrincipal() == null;
         // System.out.println("User is null? " + userIsNull);
@@ -180,7 +180,7 @@ public class AuthenticationController {
                     ((User) userDetails).getPrefeitura() != null && 
                     !u.getId().equals(((User) userDetails).getId()) &&
                     u.getPrefeitura().getId().equals(((User) userDetails).getPrefeitura().getId())) {
-                    return new UserResponseDTO(u.getId(), u.getCompleteName(), u.getEmail(), u.getRole());
+                    return new UserResponseDTO(u.getId(), u.getCompleteName(), u.getEmail(), u.getRole(), u.getPrefeitura() != null ? u.getPrefeitura().getId() : null);
                 }
                 return null;
             }).filter(u -> u != null).collect(Collectors.toList());

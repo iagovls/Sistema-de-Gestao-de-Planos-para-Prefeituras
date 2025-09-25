@@ -9,7 +9,7 @@ import { Erro } from "@/app/types/proposta";
 
 
 export default function MinhaConta() {
-    const [user, setUser] = useState<{ nomeCompleto: string; email: string; role: string } | null>(null);
+    const [user, setUser] = useState<{ nomeCompleto: string; email: string; role: string; prefeituraId: number } | null>(null);
     const [erro, setErro] = useState<Erro | null>(null);
 
     useEffect(() => {
@@ -34,18 +34,17 @@ export default function MinhaConta() {
                 }
 
                 const data = await res.json();
-                console.log(data)
                 
 
                 // Ajuste para o campo retornado pelo backend (userName ou nomeCompleto)
                 setUser({
                     nomeCompleto: data.completeName, // ou data.user.nomeCompleto
                     email: data.email,
-                    role: data.role
+                    role: data.role,
+                    prefeituraId: data.prefeituraId || null,
                 });
 
             } catch (error: unknown) {
-                console.error("Erro ao buscar usuário:", error);
                 const message = error instanceof Error ? error.message : "Erro desconhecido ao buscar usuário";
                 setErro({ message });
             }
@@ -58,28 +57,28 @@ export default function MinhaConta() {
         <main className="flex flex-col items-center gap-10">
             
             <Title titulo={"Minha conta"}/>
-            <div className="md:w-96 gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5">
+            <div className="md:w-auto gap-2 flex flex-col text-start bg-white rounded-2xl shadow-sm w-10/12 h-auto p-5">
 
                 {erro && <div className="text-red-600">{erro.message}</div>}
 
                 {!user && !erro && <div>Carregando...</div>}
 
                 {user && (
-                    <div className="flex flex-col items-center gap-3">
-                        <div className="flex gap-3">
-                            <div>{user.nomeCompleto}</div>
-                            {user.role === "MASTER" ? <div className="bg-verde text-white text-xs rounded-full font-bold px-3 pt-1 text-center w-auto">Usuário administrador</div> : ""}
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="flex gap-3 justify-center items-center flex-nowrap">
+                            <div className="w-auto whitespace-nowrap">{user.nomeCompleto}</div>
+                            {user.role === "ADMIN" ? <div className="bg-verde text-white text-xs rounded-full font-bold px-3 py-1 text-center whitespace-nowrap w-auto">Usuário administrador</div> : ""}
                         </div>
                         <div>{user.email}</div>
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col gap-2 items-center">
                             <Link href="/conta/redefinicao-senha" className="cursor-pointer">
                                 <BotaoComun titulo="Alterar senha"/>
                             </Link>
-                            {user.role === "ADMIN" ? (
-                            <Link href="/conta/gerenciar-usuarios" className="cursor-pointer">
-                                <BotaoComun titulo="Gerenciar usuários"/>   
-                            </Link>
-                            ) : ""}
+                            {user.role === "ADMIN" && (
+                                <Link href={`/conta/gerenciar-usuarios?prefeituraId=${user.prefeituraId}`} className="cursor-pointer">
+                                    <BotaoComun titulo="Gerenciar usuários"/>   
+                                </Link>
+                            )}
                         </div>  
                     </div>
                 )}

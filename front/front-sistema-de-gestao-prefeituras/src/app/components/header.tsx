@@ -13,7 +13,6 @@ export function Header() {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        // console.log("localStorage: ", localStorage)
         
 
         
@@ -27,7 +26,6 @@ export function Header() {
                 return res.json();
             })
             .then((data) => {
-                console.log(data);
                 if (data && data.completeName) {
                     setFirstNome(data.completeName.split(" ")[0]);
                 } else if(data.status == 500) {   
