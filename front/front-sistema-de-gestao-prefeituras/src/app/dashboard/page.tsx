@@ -36,7 +36,6 @@ function DashboardContent() {
   const prefeituraId = Number(searchParams.get("prefeituraId"));
 
   const { propostas, isLoading, isError } = usePropostas(prefeituraId);
-  // console.log("propostas: ", propostas);
 
 
 
@@ -46,7 +45,6 @@ function DashboardContent() {
 
     const planosMap = new Map<string, PlanoData>();
     propostas.filter((proposta: Proposta) => proposta.ativa).forEach((proposta: Proposta) => {
-      console.log(proposta.meta < new Date().getFullYear().toString())
       const planoNome = proposta.plano.titulo || "Plano não definido";
       if (!planosMap.has(planoNome)) {
         planosMap.set(planoNome, {
@@ -77,7 +75,6 @@ function DashboardContent() {
           plano.emAndamento++; // Status não reconhecido vai para em andamento
       }
     });
-    console.log("PlanosMap",planosMap)
     return Array.from(planosMap.values());
   }, [propostas]);
 
