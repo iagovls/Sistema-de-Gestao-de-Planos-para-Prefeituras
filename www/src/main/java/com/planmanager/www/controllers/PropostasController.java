@@ -26,7 +26,7 @@ import com.planmanager.www.repositories.OrgaosGestoresRepository;
 import com.planmanager.www.repositories.PlanosRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
 import com.planmanager.www.repositories.PropostaRepository;
-import com.planmanager.www.service.PropostaSnapshotService;
+import com.planmanager.www.services.PropostaSnapshotService;
 import com.planmanager.www.utils.PropostaMapper;
 
 import jakarta.validation.Valid;

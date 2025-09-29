@@ -15,9 +15,9 @@ export default function Login() {
         // Use DOMPurify to sanitize email and password before sending
         const cleanEmail = DOMPurify.sanitize(email);
         const cleanPassword = DOMPurify.sanitize(password);
-        console.log("credentials: ", cleanEmail, cleanPassword);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",                    
@@ -34,11 +34,9 @@ export default function Login() {
                 window.location.href = "/"; 
             } else {
                 alert("Login failed. Please check your credentials.");
-                console.error("Login error:", response.status);
             }
         } catch (error) {
-            console.error("Login error:", error);
-            alert("An error occurred during login.");
+            alert(error instanceof Error ? error.message : "An unknown error occurred");
         }
     };
 
@@ -71,7 +69,7 @@ export default function Login() {
                         required
                     />
                     <Link
-                        href={"/conta/redefinicao-senha"}
+                        href={"/conta/recuperar-senha"}
                         className="text-verde font-bold text-end hover:text-green-700"
 
                     >

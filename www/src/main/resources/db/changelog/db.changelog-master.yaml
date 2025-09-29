@@ -534,5 +534,67 @@ databaseChangeLog:
                     nullable: false
                   defaultValue: true
 
+  - changeSet:
+      id: 15
+      author: system
+      changes:
+        - createTable:
+            tableName: password_reset_tokens
+            columns:
+              - column:
+                  name: id
+                  type: char(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiration_date_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: used
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: false
+              - column:
+                  name: user_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_password_reset_tokens_user
+                    references: users(id)
+
+  
+              
+
+  - changeSet:
+      id: 16
+      author: system
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: password_reset_tokens
+            constraintName: fk_password_reset_tokens_user
+        - modifyDataType:
+            tableName: users
+            columnName: id
+            newDataType: varchar(255)
+        - modifyDataType:
+            tableName: password_reset_tokens
+            columnName: user_id
+            newDataType: varchar(255)
+        - addForeignKeyConstraint:
+            baseTableName: password_reset_tokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_password_reset_tokens_user
+
   
               

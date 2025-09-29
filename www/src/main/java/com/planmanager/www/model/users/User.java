@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.planmanager.www.model.passwordToken.PasswordResetToken;
 import com.planmanager.www.model.prefeituras.Prefeitura;
 
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity(name = "users")
@@ -32,6 +34,9 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "prefeitura_id", nullable = false)
     private Prefeitura prefeitura;  
+
+    @OneToMany(mappedBy = "user")
+    private List<PasswordResetToken> passwordResetTokens;
 
 
     public void setUserName(String userName) {

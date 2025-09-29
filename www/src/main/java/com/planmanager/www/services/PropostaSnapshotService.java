@@ -1,4 +1,4 @@
-package com.planmanager.www.service;
+package com.planmanager.www.services;
 
 import java.util.Date;
 

@@ -1,18 +1,8 @@
 import useSWR from "swr";
+import fetcher from "../utils/fetcher";
 
 // const fetcher = (url: string) => fetch(url).then((res) => res.json());
-async function fetcher(url:string) {
 
-  const token = localStorage.getItem("token");  
-  const headers: HeadersInit = {}; 
-  if(token){
-    headers.Authorization = `Bearer ${token}`;
-  }
-  // validateToken(headers);
-
-  const res = await fetch(url, { headers });
-  return res.json();
-}
 
 export function usePropostas(prefeituraId?: number) {
   const shouldFetch = prefeituraId !== undefined;

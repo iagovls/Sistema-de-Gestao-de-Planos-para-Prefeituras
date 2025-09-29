@@ -1,6 +1,8 @@
 "use client"
 
 import Link from "next/link";
+import Image from "next/image";
+
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -60,13 +62,13 @@ export function Header() {
 
     return (
         <div className="w-full h-auto flex justify-between p-3 text-white">
-            <Link href={"/"} className="bg-azulclaro w-24 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center text-white">
-                Início
+            <Link href={"/"} className="w-32 h-10 cursor-pointer flex items-center justify-center">
+                <Image src="/monitoramentocmdcaLogoFundoBranco.png" alt="logo" width={200} height={100} />
             </Link>
             {firstNome ? (
                 <div className="relative" ref={dropdownRef}>
                     <button
-                        className="bg-azulclaro w-32 h-10 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center gap-2"
+                        className="bg-azulclaro w-auto h-10 p-2 rounded-2xl font-semibold cursor-pointer shadow-sm flex items-center justify-center gap-2"
                         onClick={() => setDropdownOpen((open) => !open)}
                     >
                         <span>{firstNome}</span>

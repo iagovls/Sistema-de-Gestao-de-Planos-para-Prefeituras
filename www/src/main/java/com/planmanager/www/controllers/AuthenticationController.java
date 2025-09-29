@@ -23,18 +23,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.planmanager.www.model.passwordToken.PasswordResetToken;
 import com.planmanager.www.model.prefeituras.Prefeitura;
 import com.planmanager.www.model.users.User;
 import com.planmanager.www.model.users.UserRole;
 import com.planmanager.www.model.users.dto.AuthenticationDTO;
 import com.planmanager.www.model.users.dto.LoginResponseDTO;
 import com.planmanager.www.model.users.dto.RegisterDTO;
+import com.planmanager.www.model.users.dto.ResetPasswordDTO;
+import com.planmanager.www.model.users.dto.ResetPasswordMailDTO;
 import com.planmanager.www.model.users.dto.UpdatePasswordDTO;
 import com.planmanager.www.model.users.dto.UserResponseDTO;
 import com.planmanager.www.repositories.PrefeituraRepository;
 import com.planmanager.www.repositories.UserRepository;
 import com.planmanager.www.security.PasswordGenerator;
 import com.planmanager.www.security.TokenService;
+import com.planmanager.www.services.EmailService;
+import com.planmanager.www.services.PasswordResetTokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -56,6 +61,10 @@ public class AuthenticationController {
     private TokenService tokenService;
     @Autowired
     private PrefeituraRepository prefeituraRepository;
+    @Autowired
+    private PasswordResetTokenService passwordResetTokenService;
+    @Autowired
+    private EmailService emailService;
 
 
     @PostMapping("/login")
@@ -140,7 +149,8 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update-password")
-    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO data) {
+    @Operation(summary = "Update user password")
+    public ResponseEntity<?> updatePassword(@RequestBody @Valid UpdatePasswordDTO data) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = repository.findByEmail(email);
@@ -213,5 +223,39 @@ public class AuthenticationController {
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
 
+    @PostMapping("/reset-password")
+    @Operation(summary = "Reset password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO data) {
+        try {
+            passwordResetTokenService.validateToken(data.token());
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
+        if (!data.password().equals(data.confirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("As senhas não coincidem");
+        }
+
+        PasswordResetToken resetToken = passwordResetTokenService.getByToken(data.token());
+        User user = resetToken.getUser();
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(data.password()));
+        repository.save(user);
+        passwordResetTokenService.markAsUsed(resetToken);
+        return ResponseEntity.ok("Senha redefinida com sucesso");
+    }
     
+    @PostMapping("/send-reset-password-email")
+    @Operation(summary = "Send reset password email")
+    public ResponseEntity<?> sendEmailResetPassword(@RequestBody ResetPasswordMailDTO data) {
+        User user = repository.findByEmail(data.email());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+        PasswordResetToken token = passwordResetTokenService.createToken(user);
+        emailService.sendResetPasswordEmail(user.getEmail(), token.getToken());
+        return ResponseEntity.ok("Email de redefinição de senha enviado");
+    }
 }
