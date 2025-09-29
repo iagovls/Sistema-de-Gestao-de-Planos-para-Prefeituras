@@ -3,10 +3,18 @@
 import BotaoComun from "@/app/components/botoes/botaoComun";
 import Title from "@/app/components/title";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import DOMPurify from "dompurify";
 
 export default function ResetarSenha() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <ResetarSenhaContent />
+    </Suspense>
+  );
+}
+
+function ResetarSenhaContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token") || "";
@@ -51,6 +59,7 @@ export default function ResetarSenha() {
     
   };
     
+  
   return (
     <main className="flex flex-col justify-center items-center w-full gap-10">
       <Title titulo={"Criar nova senha"} />
