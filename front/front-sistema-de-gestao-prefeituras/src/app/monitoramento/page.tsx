@@ -5,11 +5,7 @@ import { useState, useMemo, useEffect } from "react";
 import { usePrefeituras, useTodasPropostas } from "../hooks/usePropostas";
 import {
   Prefeitura,
-  Proposta,
-  Plano,
-  Eixo,
-  Categoria,
-  OrgaoGestor,
+  Proposta
 } from "../types/proposta";
 import { useRouter } from "next/navigation";
 
@@ -556,6 +552,8 @@ export default function Monitoramento() {
 
             <div className="flex items-center space-x-2">
               <button
+                title="Página anterior"
+                aria-label="Ir para a página anterior"
                 onClick={() => setPaginaAtual((p) => Math.max(1, p - 1))}
                 disabled={paginaAtual === 1}
                 className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -583,6 +581,8 @@ export default function Monitoramento() {
               </div>
 
               <button
+                title="Próxima página"
+                aria-label="Ir para a próxima página"
                 onClick={() =>
                   setPaginaAtual((p) => Math.min(totalPaginas, p + 1))
                 }
