@@ -65,7 +65,7 @@ function ResetarSenhaContent() {
     } catch (err: unknown) {
       console.error("Erro ao resetar senha:", err);
       if (axios.isAxiosError(err)) {
-        const data = err.response?.data as any;
+        const data = err.response?.data as { message?: string; error?: string; detail?: string; errors?: { message: string }[] };
         const message =
           (data && (data.message || data.error || data.detail)) ||
           (Array.isArray(data?.errors) && data.errors[0]?.message) ||
