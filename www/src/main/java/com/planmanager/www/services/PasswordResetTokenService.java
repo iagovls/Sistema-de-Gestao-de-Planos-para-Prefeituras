@@ -28,7 +28,7 @@ public class PasswordResetTokenService {
         return tokenRepository.save(token);
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) throws RuntimeException{
         PasswordResetToken resetToken = tokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Token não encontrado"));
         if (resetToken.isUsed()){
             throw new RuntimeException("Token já foi utilizado");

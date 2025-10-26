@@ -34,7 +34,12 @@ echo "CREATE DATABASE IF NOT EXISTS propostasDB;" > /tmp/setup.sql
 mysql -h database-1.ck9ow20ccz8f.us-east-1.rds.amazonaws.com \
   -P 3306 \
   -u admin \
-  -pWQpB6apqNwsb2LcY0ys5 < /tmp/setup.sql
+  -p'WQpB6apqNwsb2LcY0ys5' \
+ < /tmp/setup.sql
+
+sudo aws s3 sync s3://ssl-ec2-monitoramento-cmdca/letsencrypt/ /etc/letsencrypt/ || true
+
+sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Opcional: Remova o arquivo temporário por segurança
 rm /tmp/setup.sql

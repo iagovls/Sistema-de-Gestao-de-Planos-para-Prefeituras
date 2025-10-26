@@ -26,10 +26,10 @@ interface Filtros {
 
 interface OpcoesFiltros {
   prefeituras: string[];
-  planos: Plano[];
-  eixos: Eixo[];
-  categorias: Categoria[];
-  orgaosGestores: OrgaoGestor[];
+  planos: string[];
+  eixos: string[];
+  categorias: string[];
+  orgaosGestores: string[];
   status: string[];
 }
 
@@ -55,6 +55,8 @@ export default function Monitoramento() {
     meta: "",
   });
 
+  console.log("filtros", filtros);
+
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [itensPorPagina, setItensPorPagina] = useState(10);
 
@@ -76,17 +78,17 @@ export default function Monitoramento() {
       ),
     ] as string[];
     const planos = [
-      ...new Set(propostas.map((p: Proposta) => p.plano).filter(Boolean)),
-    ] as Plano[];
+      ...new Set(propostas.map((p: Proposta) => p.plano.titulo).filter(Boolean)),
+    ] as string[];
     const eixos = [
-      ...new Set(propostas.map((p: Proposta) => p.eixo).filter(Boolean)),
-    ] as Eixo[];
+      ...new Set(propostas.map((p: Proposta) => p.eixo.titulo).filter(Boolean)),
+    ] as string[];
     const categorias = [
-      ...new Set(propostas.map((p: Proposta) => p.categoria).filter(Boolean)),
-    ] as Categoria[];
+      ...new Set(propostas.map((p: Proposta) => p.categoria.titulo).filter(Boolean)),
+    ] as string[];
     const orgaosGestores = [
-      ...new Set(propostas.map((p: Proposta) => p.orgaoGestor).filter(Boolean)),
-    ] as OrgaoGestor[];
+      ...new Set(propostas.map((p: Proposta) => p.orgaoGestor.titulo).filter(Boolean)),
+    ] as string[];
     const status = [
       ...new Set(propostas.map((p: Proposta) => p.status).filter(Boolean)),
     ] as string[];
@@ -101,6 +103,7 @@ export default function Monitoramento() {
     };
   }, [propostas, listaPrefeituras]);
 
+  console.log("opcoesFiltros", opcoesFiltros);
   // Filtrar propostas
   const propostasFiltradas = useMemo(() => {
     if (!propostas) return [];
@@ -244,9 +247,9 @@ export default function Monitoramento() {
                 className="select-with-arrow w-full border border-gray-300 rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Todos os planos</option>
-                {opcoesFiltros.planos.map((plano: Plano, index) => (
-                  <option key={index} value={plano.titulo}>
-                    {plano.titulo}
+                {opcoesFiltros.planos.map((plano, index) => (
+                  <option key={index} value={plano}>
+                    {plano} 
                   </option>
                 ))}
               </select>
@@ -265,8 +268,8 @@ export default function Monitoramento() {
               >
                 <option value="">Todos os eixos</option>
                 {opcoesFiltros.eixos.map((eixo, index) => (
-                  <option key={index} value={eixo.titulo}>
-                    {eixo.titulo}
+                  <option key={index} value={eixo}>
+                    {eixo}
                   </option>
                 ))}
               </select>
@@ -287,8 +290,8 @@ export default function Monitoramento() {
               >
                 <option value="">Todas as categorias</option>
                 {opcoesFiltros.categorias.map((categoria, index) => (
-                  <option key={index} value={categoria.titulo}>
-                    {categoria.titulo}
+                  <option key={index} value={categoria}>
+                    {categoria}
                   </option>
                 ))}
               </select>
@@ -309,8 +312,8 @@ export default function Monitoramento() {
               >
                 <option value="">Todos os órgãos</option>
                 {opcoesFiltros.orgaosGestores.map((orgao, index) => (
-                  <option key={index} value={orgao.titulo}>
-                    {orgao.titulo}
+                  <option key={index} value={orgao}>
+                    {orgao}
                   </option>
                 ))}
               </select>

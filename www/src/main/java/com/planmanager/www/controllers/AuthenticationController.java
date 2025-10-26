@@ -1,5 +1,6 @@
 package com.planmanager.www.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ import com.planmanager.www.services.PasswordResetTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -255,7 +257,11 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
         PasswordResetToken token = passwordResetTokenService.createToken(user);
-        emailService.sendResetPasswordEmail(user.getEmail(), token.getToken());
+        try {
+            emailService.sendResetPasswordEmail(user.getCompleteName(), user.getEmail(), token.getToken());
+        } catch (MessagingException | IOException | InterruptedException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao enviar email");
+        }
         return ResponseEntity.ok("Email de redefinição de senha enviado");
     }
 }

@@ -4,7 +4,7 @@ import BotaoComun from "@/app/components/botoes/botaoComun";
 import Title from "@/app/components/title";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import DOMPurify from "dompurify";
+import axios from "axios";
 
 export default function ResetarSenha() {
   return (
@@ -20,42 +20,65 @@ function ResetarSenhaContent() {
   const token = searchParams.get("token") || "";
   const [password, setPassword] = useState(""); 
   const [confirmPassword, setConfirmPassword] = useState("");
-
-
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   
+
+
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Validações antes de enviar
+    setError("");
+    setLoading(true);
     
     if (!token) {
       alert("Token inválido ou ausente.");
+      setLoading(false);
       return;
     }
 
-    const cleanPassword = DOMPurify.sanitize(password);
-    const cleanConfirmPassword = DOMPurify.sanitize(confirmPassword);
+    const cleanPassword = password.trim();
+    const cleanConfirmPassword = confirmPassword.trim();
 
     if (cleanPassword !== cleanConfirmPassword) {
       alert("As senhas não coincidem.");
       return;
     }
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token,
-        password,
-        confirmPassword,
-      }),
-    });
-    router.push("/conta/login");
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`,
+        {
+          token,
+          password: cleanPassword,
+          confirmPassword: cleanConfirmPassword,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    
-     
+      if (response.status >= 200 && response.status < 300) {
+        alert("Senha resetada com sucesso!");
+        router.push("/conta/login");
+      }
+    } catch (err: unknown) {
+      console.error("Erro ao resetar senha:", err);
+      if (axios.isAxiosError(err)) {
+        const data = err.response?.data as any;
+        const message =
+          (data && (data.message || data.error || data.detail)) ||
+          (Array.isArray(data?.errors) && data.errors[0]?.message) ||
+          err.message ||
+          "Erro ao resetar senha.";
+        setError(message);
+      } else {
+        setError("Erro ao resetar senha.");
+      }
+    } finally {
+      setLoading(false);
+    }
     
   };
     
@@ -63,6 +86,11 @@ function ResetarSenhaContent() {
   return (
     <main className="flex flex-col justify-center items-center w-full gap-10">
       <Title titulo={"Criar nova senha"} />
+      {error && (
+        <p className="text-red-500" role="alert" aria-live="polite">
+          {error}
+        </p>
+      )}
       <div className="md:w-96 flex flex-col gap-3 text-center bg-white rounded-2xl shadow-sm w-10/12 h-auto py-5 px-10">
         <form onSubmit={handleSubmit} className="flex flex-col mb-5">
           <h1 className="text-start font-semibold">Nova senha</h1>

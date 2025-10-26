@@ -4,10 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ResetPasswordMailDTO(
     @NotBlank(message = "O e-mail é obrigatório")
-    String email,
+    String email
     
-    @NotBlank(message = "O token é obrigatório")
-    String token
+    
     
     ) {
 
