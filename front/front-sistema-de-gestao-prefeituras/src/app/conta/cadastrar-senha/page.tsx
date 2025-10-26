@@ -21,8 +21,7 @@ function ResetarSenhaContent() {
   const [password, setPassword] = useState(""); 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  
+  const [loading, setLoading] = useState(false);  
 
 
   
@@ -81,10 +80,13 @@ function ResetarSenhaContent() {
     }
     
   };
-    
-  
-  return (
-    <main className="flex flex-col justify-center items-center w-full gap-10">
+    return (
+  loading ? (
+        <div className="flex justify-center items-center w-full h-full">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-verde"></div>
+        </div>
+      ) : (
+        <main className="flex flex-col justify-center items-center w-full gap-10">
       <Title titulo={"Criar nova senha"} />
       {error && (
         <p className="text-red-500" role="alert" aria-live="polite">
@@ -124,5 +126,5 @@ function ResetarSenhaContent() {
         </form>
       </div>
     </main>
-  );
+  ));
 }
