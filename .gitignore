@@ -8,6 +8,8 @@ idea/
 Thumbs.db
 desktop.ini
 
+binbash.txt
+
 node_modules/
 .pnp
 .pnp.*
