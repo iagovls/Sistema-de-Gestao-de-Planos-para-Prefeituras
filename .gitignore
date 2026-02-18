@@ -9,6 +9,8 @@ Thumbs.db
 desktop.ini
 
 binbash.txt
+req_sis_CMDCA.txt
+front/.idea
 
 node_modules/
 .pnp
@@ -53,3 +55,7 @@ lerna-debug.log*
 
 *.swp
 *.swo
+
+.idea/
+.vscode/
+

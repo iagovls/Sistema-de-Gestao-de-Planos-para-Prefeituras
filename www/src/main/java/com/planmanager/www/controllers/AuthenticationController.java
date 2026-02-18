@@ -71,28 +71,17 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password()); // Cria um token
-                                                                                                       // de
-                                                                                                       // autenticação
-                                                                                                       // (login +
-                                                                                                       // senha) para o
-                                                                                                       // Spring
-                                                                                                       // Security
-                                                                                                       // validar.
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password()); 
+        // Cria um token de autenticação (login + senha) para o Spring Security validar.
 
-        var auth = this.authenticationManager.authenticate(usernamePassword); // Pede para o AuthenticationManager
-                                                                              // validar o token. Se for inválido, lança
-                                                                              // exceção automaticamente
-                                                                              // (BadCredentialsException). Se for
-                                                                              // válido, retorna um objeto
-                                                                              // Authentication com o usuário
-                                                                              // autenticado.
+        var auth = this.authenticationManager.authenticate(usernamePassword); 
+        // Pede para o AuthenticationManager validar o token. Se for inválido, lança exceção automaticamente (BadCredentialsException). Se for válido, retorna um objeto Authentication com o usuário autenticado.
 
-        var token = tokenService.generateToken((User) auth.getPrincipal()); // auth.getPrincipal() retorna o usuario
-                                                                            // logado
+        var token = tokenService.generateToken((User) auth.getPrincipal()); 
+        // auth.getPrincipal() retorna o usuário logado
 
-        return ResponseEntity.ok(new LoginResponseDTO(token)); // Retorna uma resposta HTTP 200 OK com o token JWT no
-                                                               // corpo, como JSON.
+        return ResponseEntity.ok(new LoginResponseDTO(token)); 
+        // Retorna uma resposta HTTP 200 OK com o token JWT no corpo, como JSON.
     }
 
     @PostMapping("/register")
