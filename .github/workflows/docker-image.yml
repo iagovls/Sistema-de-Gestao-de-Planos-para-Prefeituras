@@ -32,33 +32,7 @@ jobs:
       with:
         host: "ec2-34-195-163-35.compute-1.amazonaws.com"
         username: ec2-user
-        key: "-----BEGIN RSA PRIVATE KEY-----
-              MIIEogIBAAKCAQEAv4KYYIEZxL1kOQUrLyB+GwBdpplPb1aHJY7dGmffg5Qdnxqd
-              PFgxDG3qGuIspyVcy/l21Wq6BVhGNp/6OL+ze9CxnRthJIOPR7ZGtVMuj40097x2
-              4U26XsKc0cmOsV0LH4FZPIV4kvc7KuqKXhaqRiRs9ahrhydF0Ba3lIvgMEZFgluZ
-              qxAyiN+AgW1tD1VGPUGadnGk0wK7kJoZ7eyHNAM/QAbEDP+T7FlbmRcwdgIW2GXb
-              RoEqSon2qy1CQmIoXK3E+8KyGHBsoRLXyJCfOPBV9l1FsXdRTOlddb8ZvSuswKxO
-              TPqC1Ni93HxGGgo+SGNMIb+upj3eyCZuNU5OMwIDAQABAoIBAADBwF5pRDPN186N
-              4azPARCUQMp+wpybB++zD9ah4HVBqZhOX560boUxDgLLMAf9Es/PjZOsV03cGnLu
-              0OtWfpwXqAwJ5qlhR7it1Lu0t3NjyHjOKt4bE4h6VmpR1JmI15lpRnQBxwc1qOsz
-              gBZ9GnEqha+22a3wDsuSu2j/4IPwUWWkC/JZ2xMzy9SyzBvZJVvZGGcaM6243rtF
-              dliN3oYswH5wOcd1NBdrpVo8bFqU9e0Sp9AT6uJ5xIVq2Jg5leGsI6kOHsv3xEXC
-              fJ1abah2Sehl7ALdRnsHxzPxJ0VOzNzDHzoSfurbmb2vng7+0mWBZFYwPNIs4KEx
-              kn9nRnECgYEA9Td8+DTpuDYU1+WjgvHHMIcvL2Idwdk2kWH2cSrEJ5UI+iU6zhYO
-              Pn7NLimAGFt+CsvFCFJ2hKnJQzQH+TtBcz+Y/+mKeWOLODF/Oqxhwr/aP0SkV7d4
-              afpfQhy2Tm+S50UHzES3xwYIR4fEohZHHAai3Ey/GTbwaA4z3mBkgFsCgYEAx+6C
-              IJMCeUcO05woATMMZcdqI7fOqrYK+ZwpeU1SzE2nkgNaE+4Qa4t1qxTgpHQmokFt
-              ihLy9kodnYmQBb7LmS7aH9A2ZBwfSKwbpSzxkXYsdOdD5E26XKRShl+Z4ZSxUEs5
-              xQ16GF6ceQNQG/7wNrCp2/v4qsWXya7gFkfLUQkCgYAgbsJcocL31k9Tbs/9lbTe
-              ukKHZdbBuNT6zZYmyZ1ADvos+5eXgltH8MV6gYqrrg4xp1ncC+wZB8vS06LqV+gE
-              MjkuP9lMzNmxCPrm673SYEWhcJa780w92BuZRurl3OP1KrApWD1mWWnm7BIZzhCB
-              qG8J7CyqTRXm7Vn245DnWQKBgGsvbCYIinf4Z3N9MVlLQ+dA3J9fiHWu+P1PAlEc
-              6jnLm/3EvEMZC0aM0r2wiKrB9oBgcVhnxkfR/kSaHlNmMYLjQl9x4ecTyJXOZ1fL
-              W4rvfvABmD1KipHmKrQNhtMQQ2tXmRYSnpV4C405AHax25iGZ9ofIPZ0zmZ60XpA
-              bTj5AoGAC4kaIrxgymFxaKLihfmWP5vuWhKMvCUvOHtcWLh1UkhTyy5y1UsjV0Ur
-              k88OcPU0Z3J1WhvRTTwKkyTu2g58Typ9hERxZJjtivRFRGnN+2nKWR2KJLjRASGa
-              EAKOyAT46RoP4UHbbLOdBX4FCAqeqtnZz9EJDXIWf8DxnBeJsqU=
-              -----END RSA PRIVATE KEY-----"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
           cd /home/ec2-user/Sistema-de-Gestao-de-Planos-para-Prefeituras
