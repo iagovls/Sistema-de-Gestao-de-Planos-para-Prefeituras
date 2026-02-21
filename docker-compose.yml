@@ -3,7 +3,7 @@ services:
     build: 
       context: ./nginx
       args:
-        ENVIRONMENT: dev
+        ENVIRONMENT: prod
     ports:
       - "80:80"
       - "443:443"
@@ -21,4 +21,4 @@ services:
     #  - "8080:8080"
     restart: always
     env_file:
-      - .env.dev
+      - .env.prod
