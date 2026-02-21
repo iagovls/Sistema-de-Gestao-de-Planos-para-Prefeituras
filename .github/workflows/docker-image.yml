@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@main
+      with:
+        aws-region: us-east-1
+        role-to-assume: arn:aws:iam::622840651405:role/GitHubActionsDeployRole    
+
+    - name: Get GITHUB_TOKEN from AWS SSM
+      run: GITHUB_TOKEN=$(sudo aws ssm get-parameter \
+            --name "/github/pat" \
+            --with-decryption \
+            --query "Parameter.Value" \
+            --output text \
+            --region us-east-1)
+
+    - name: Access EC2
+      run: aws ssm start-session \
+            --target i-0fb7cc69873131cef \
+            --region us-east-1
+    
+    - name: Pull repo
+      run: cd /home/ec2-user && git pull https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-de-Planos-para-Prefeituras.git
+    
+    - name: Build the Docker image
+      run: sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml down -d && sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
