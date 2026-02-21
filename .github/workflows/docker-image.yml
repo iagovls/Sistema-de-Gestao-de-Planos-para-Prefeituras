@@ -28,9 +28,7 @@ jobs:
         role-to-assume: arn:aws:iam::622840651405:role/GitHubActionsDeployRole    
 
     - name: Access EC2
-      run: aws ssm start-session \
-            --target i-0fb7cc69873131cef \
-            --region us-east-1
+      run: aws ssm start-session --target i-0fb7cc69873131cef --region us-east-1
     
     - name: Pull repo
       run: cd /home/ec2-user && git pull https://iagovls:${GITHUB_TOKEN}@github.com/iagovls/Sistema-de-Gestao-de-Planos-para-Prefeituras.git
