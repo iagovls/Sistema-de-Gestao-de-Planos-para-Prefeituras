@@ -30,7 +30,7 @@ jobs:
     - name: Deploy on EC2 (git pull + docker compose)
       uses: appleboy/ssh-action@v1
       with:
-        host: ${{ secrets.EC2_HOST }}
+        host: "ec2-34-195-163-35.compute-1.amazonaws.com"
         username: ec2-user
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
