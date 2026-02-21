@@ -15,7 +15,7 @@ services:
   
 
   backend:
-    build: ./www
+    build: backend
     # A porta agora é acessada apenas pela rede interna do Docker, através do Nginx
     # ports:
     #  - "8080:8080"
