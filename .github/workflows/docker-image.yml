@@ -28,7 +28,7 @@ jobs:
         role-to-assume: arn:aws:iam::622840651405:role/GitHubActionsDeployRole    
 
     - name: Deploy on EC2 (git pull + docker compose)
-      uses: appleboy/ssh-action@main
+      uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ec2-user
