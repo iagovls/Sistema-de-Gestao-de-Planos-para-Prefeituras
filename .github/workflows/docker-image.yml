@@ -15,6 +15,9 @@ jobs:
       id-token: write
       contents: read
 
+    env:
+      GITHUB_TOKEN: ${{ secrets.GB_TOKEN }}
+
     steps:
     - uses: actions/checkout@v4
 
@@ -23,14 +26,6 @@ jobs:
       with:
         aws-region: us-east-1
         role-to-assume: arn:aws:iam::622840651405:role/GitHubActionsDeployRole    
-
-    - name: Get GITHUB_TOKEN from AWS SSM
-      run: GITHUB_TOKEN=$(sudo aws ssm get-parameter \
-            --name "/github/pat" \
-            --with-decryption \
-            --query "Parameter.Value" \
-            --output text \
-            --region us-east-1)
 
     - name: Access EC2
       run: aws ssm start-session \
