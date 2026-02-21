@@ -37,6 +37,13 @@ jobs:
         script: |
           cd /home/ec2-user/Sistema-de-Gestao-de-Planos-para-Prefeituras
           git pull origin main
+          cat > .env.prod << 'EOF'
+          API_SECURITY_TOKEN_SECRET=${{ secrets.API_SECURITY_TOKEN_SECRET }}
+          SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          SPRING_PROFILES_ACTIVE=prod
+          EOF
           docker compose pull
           sudo docker compose down && sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
