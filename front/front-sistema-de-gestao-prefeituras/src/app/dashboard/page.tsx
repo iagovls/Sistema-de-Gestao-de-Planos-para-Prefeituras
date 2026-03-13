@@ -10,6 +10,7 @@ import Info from "../components/info";
 import { Proposta } from "../types/proposta";
 
 interface PlanoData {
+  id: number;
   nome: string;
   totalPropostas: number;
   cumpridas: number;
@@ -26,9 +27,6 @@ export default function Dashboard() {
 
 function DashboardContent() {
   const router = useRouter();
-  const handlePlanoClick = (plano: PlanoData) => {    
-    router.push(`/dashboard/plano?prefeituraId=${prefeituraId}&planoName=${plano.nome}`);
-  };
   const handleNewPlanoClick = () => {
     router.push(`/dashboard/plano/criar-plano?prefeituraId=${prefeituraId}`);
   }
@@ -36,6 +34,14 @@ function DashboardContent() {
   const prefeituraId = Number(searchParams.get("prefeituraId"));
 
   const { propostas, isLoading, isError } = usePropostas(prefeituraId);
+  const handlePlanoClick = (plano: PlanoData) => {
+    const planoId = propostas?.find
+    (
+      (proposta: Proposta) => proposta.plano.id === plano.id
+    )
+    ?.plano.id;
+    router.push(`/dashboard/plano?prefeituraId=${prefeituraId}&planoName=${plano.nome}&planoId=${planoId}`);
+  };
 
 
 
@@ -43,12 +49,13 @@ function DashboardContent() {
   const planosData = useMemo(() => {
     if (!propostas) return [];
 
-    const planosMap = new Map<string, PlanoData>();
+    const planosMap = new Map<number, PlanoData>();
     propostas.filter((proposta: Proposta) => proposta.ativa).forEach((proposta: Proposta) => {
-      const planoNome = proposta.plano.titulo || "Plano não definido";
-      if (!planosMap.has(planoNome)) {
-        planosMap.set(planoNome, {
-          nome: planoNome,
+      const planoId = proposta.plano.id || 0;
+      if (!planosMap.has(planoId)) {
+        planosMap.set(planoId, {
+          id: proposta.plano.id,
+          nome: proposta.plano.titulo || "Plano não definido",
           totalPropostas: 0,
           cumpridas: 0,
           emAndamento: 0,
@@ -56,7 +63,7 @@ function DashboardContent() {
         });
       }
 
-      const plano = planosMap.get(planoNome)!;
+      const plano = planosMap.get(planoId)!;
       plano.totalPropostas++;
 
       switch (proposta.status?.toLowerCase()) {
@@ -75,6 +82,7 @@ function DashboardContent() {
           plano.emAndamento++; // Status não reconhecido vai para em andamento
       }
     });
+    console.log(planosMap)
     return Array.from(planosMap.values());
   }, [propostas]);
 

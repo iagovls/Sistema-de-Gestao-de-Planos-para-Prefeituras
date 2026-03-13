@@ -13,6 +13,7 @@ import { Proposta, Prefeitura } from "@/app/types/proposta";
 
 
 interface CategoriaData {
+  id: number;
   nome: string;
   totalPropostas: number;
   cumpridas: number;
@@ -57,6 +58,7 @@ function CategoriasContent() {
         const nome = proposta.categoria.titulo || "categoria não definido";
         if (!categoriasMap.has(nome)) {
           categoriasMap.set(nome, {
+            id: proposta.categoria.id || 0,
             nome,
             totalPropostas: 0,
             cumpridas: 0,
