@@ -57,7 +57,7 @@ public class PrefeiturasController {
     }
 
     @PutMapping("/{id}/logo-prefeitura")
-    public ResponseEntity<PrefeituraDTO> updateLogoPrefeitura(@PathVariable Long id, @RequestBody String logoPrefeitura) {
+    public ResponseEntity<PrefeituraDTO> updateLogoPrefeitura(@PathVariable int id, @RequestBody String logoPrefeitura) {
         Prefeitura prefeitura = prefeituraRepository.findById(id).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
         prefeitura.setLogoPrefeitura(logoPrefeitura);
         prefeituraRepository.save(prefeitura);
@@ -89,7 +89,7 @@ public class PrefeiturasController {
     }
 
     @PutMapping("/{id}/logo-cmdca")
-    public ResponseEntity<PrefeituraDTO> updateLogoCMDCA(@PathVariable Long id, @RequestBody String logoCMDCA){
+    public ResponseEntity<PrefeituraDTO> updateLogoCMDCA(@PathVariable int id, @RequestBody String logoCMDCA){
 
         Prefeitura prefeitura = prefeituraRepository.findById(id).orElseThrow(() -> new RuntimeException("Prefeitura não encontrada"));
         prefeitura.setLogoCMDCA(logoCMDCA);

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planmanager.www.model.planos.Plano;
 
-public interface PlanosRepository extends JpaRepository<Plano, Long> {
+public interface PlanosRepository extends JpaRepository<Plano, Integer> {
 
 }

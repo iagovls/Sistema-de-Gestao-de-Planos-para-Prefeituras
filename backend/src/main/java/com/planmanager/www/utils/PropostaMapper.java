@@ -10,18 +10,26 @@ import com.planmanager.www.model.propostas.dto.PropostaRequestDTO;
 
 public class PropostaMapper {
 
-    public static Proposta toEntity(PropostaRequestDTO dto, Prefeitura prefeitura, Plano plano, Eixo eixo, Categoria categoria, OrgaoGestor orgaoGestor) {
+    public static Proposta toEntity
+            (
+                    PropostaRequestDTO dto,
+                    Prefeitura prefeitura,
+                    Plano plano,
+                    Eixo eixo,
+                    Categoria categoria,
+                    OrgaoGestor orgaoGestor
+            ) {
         Proposta proposta = new Proposta();
         proposta.setTitulo(dto.titulo());
         proposta.setMeta(dto.meta());
         proposta.setStatus(dto.status());
         proposta.setAtiva(dto.ativa());
-        proposta.setPlano(plano != null ? plano : null);
-        proposta.setEixo(eixo != null ? eixo : null);
-        proposta.setCategoria(categoria != null ? categoria : null);
-        proposta.setOrgaoGestor(orgaoGestor != null ? orgaoGestor : null);
+        proposta.setPlano(plano);
+        proposta.setEixo(eixo);
+        proposta.setCategoria(categoria);
+        proposta.setOrgaoGestor(orgaoGestor);
         proposta.setMotivo(dto.motivo());
-        proposta.setMetaPermanente(dto.metaPermanente());
+        proposta.setMetaPermanente(Boolean.TRUE.equals(dto.metaPermanente()));
         proposta.setPrefeitura(prefeitura);
         return proposta;
     }

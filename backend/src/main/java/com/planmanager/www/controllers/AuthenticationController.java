@@ -87,7 +87,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @Operation(summary = "Create a new user")
     public ResponseEntity<?> register(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RegisterDTO data) {
-        Long prefeituraId = ((User) userDetails).getPrefeitura() != null ? ((User) userDetails).getPrefeitura().getId() : null;
+        Integer prefeituraId = ((User) userDetails).getPrefeitura() != null ? ((User) userDetails).getPrefeitura().getId() : null;
               
         if (((User) userDetails).getRole() != UserRole.ADMIN) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
@@ -131,7 +131,13 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
 
-        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getCompleteName(), user.getEmail(), user.getRole(), user.getPrefeitura() != null ? user.getPrefeitura().getId() : null);
+        UserResponseDTO responseDTO = new UserResponseDTO
+                (
+                        user.getId(),
+                        user.getCompleteName(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getPrefeitura() != null ? user.getPrefeitura().getId() : null);
         // var auth = SecurityContextHolder.getContext().getAuthentication();
         // boolean userIsNull = auth.getPrincipal() == null;
         // System.out.println("User is null? " + userIsNull);
@@ -177,10 +183,10 @@ public class AuthenticationController {
                     return null;
                 }
                 // Se o usuário for da mesma prefeitura do usuário autenticado, retorna o DTO
-                if (u.getPrefeitura().getId() != null && 
-                    ((User) userDetails).getPrefeitura() != null && 
+                if (
+                    ((User) userDetails).getPrefeitura() != null &&
                     !u.getId().equals(((User) userDetails).getId()) &&
-                    u.getPrefeitura().getId().equals(((User) userDetails).getPrefeitura().getId())) {
+                    u.getPrefeitura().getId() == (((User) userDetails).getPrefeitura().getId())) {
                     return new UserResponseDTO(u.getId(), u.getCompleteName(), u.getEmail(), u.getRole(), u.getPrefeitura() != null ? u.getPrefeitura().getId() : null);
                 }
                 return null;

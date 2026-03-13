@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -38,14 +38,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_planos_prefeitura
@@ -66,14 +66,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_eixos_prefeitura
@@ -93,14 +93,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_categorias_prefeitura
@@ -120,14 +120,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_orgaos_gestores_prefeitura
@@ -147,7 +147,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(36)
+                  type: varchar(255)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -174,7 +174,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: true
                     foreignKeyName: fk_users_prefeitura
@@ -189,42 +189,42 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: prefeitura_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostas_prefeitura
                     references: prefeituras(id)
               - column:
                   name: plano_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostas_plano
                     references: planos(id)
               - column:
                   name: eixo_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostas_eixo
                     references: eixos(id)
               - column:
                   name: categoria_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostas_categoria
                     references: categorias(id)
               - column:
                   name: orgao_gestor_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostas_orgao_gestor
@@ -238,7 +238,7 @@ databaseChangeLog:
                   name: meta
                   type: date # '2025-07-18'
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: status
                   type: varchar(50)
@@ -248,6 +248,18 @@ databaseChangeLog:
               - column:
                   name: motivo
                   type: varchar(255)
+              - column:
+                  name: meta_permanente
+                  type: boolean
+                  constraints:
+                    nullable: true
+                  defaultValue: false
+              - column:
+                  name: ativa
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
 
   - changeSet:
       id: 8
@@ -258,14 +270,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: proposta_id
-                  type: bigint
+                  type: int
                   constraints:
                     nullable: false
                     foreignKeyName: fk_propostasnapshot_proposta
@@ -279,7 +291,7 @@ databaseChangeLog:
                   name: meta
                   type: date # '2025-07-18'
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: status
                   type: varchar(50)
@@ -321,6 +333,12 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: meta_permanente
+                  type: boolean
+                  constraints:
+                    nullable: true
+                  defaultValue: false
               
 
               
@@ -336,10 +354,10 @@ databaseChangeLog:
                   value: "Presidente Tancredo Neves"
               - column:
                   name: logo_prefeitura
-                  value: "/prefeituraDePresidenteTancredoNevesLogo.jpg"
+                  value: "/prefeituraDePresidenteTancredoNevesLogo.png"
               - column:
                   name: logo_cmdca
-                  value: "/cmdcaDePresidenteTancredoNevesLogo.jpg" 
+                  value: "/cmdcaDePresidenteTancredoNevesLogo.png" 
               
 
                   
@@ -478,64 +496,11 @@ databaseChangeLog:
                   name: prefeitura_id 
                   value: "1"
 
+
+
+
   - changeSet:
       id: 11
-      author: system
-      changes:
-        - addColumn:
-            tableName: propostas
-            columns:
-              - column:
-                  name: meta_permanente
-                  type: boolean
-                  constraints:
-                    nullable: true
-                  defaultValue: false
-
-  - changeSet:
-      id: 12
-      author: system
-      changes:
-        - addColumn:
-            tableName: propostas_snapshot
-            columns:
-              - column:
-                  name: meta_permanente
-                  type: boolean
-                  constraints:
-                    nullable: true
-                  defaultValue: false
-
-  - changeSet:
-      id: 13
-      author: system
-      changes:
-        - dropNotNullConstraint:
-            tableName: propostas
-            columnName: meta
-            columnDataType: date
-
-        - dropNotNullConstraint:
-            tableName: propostas_snapshot
-            columnName: meta
-            columnDataType: date
-
-  - changeSet:
-      id: 14
-      author: system
-      changes:
-        - addColumn:
-            tableName: propostas
-            columns:
-              - column:
-                  name: ativa
-                  type: boolean
-                  constraints:
-                    nullable: false
-                  defaultValue: true
-
-  - changeSet:
-      id: 15
       author: system
       changes:
         - createTable:
@@ -565,7 +530,7 @@ databaseChangeLog:
                   defaultValue: false
               - column:
                   name: user_id
-                  type: varchar(36)
+                  type: varchar(255)
                   constraints:
                     nullable: true
                     foreignKeyName: fk_password_reset_tokens_user
@@ -575,20 +540,13 @@ databaseChangeLog:
               
 
   - changeSet:
-      id: 16
+      id: 12
       author: system
       changes:
         - dropForeignKeyConstraint:
             baseTableName: password_reset_tokens
             constraintName: fk_password_reset_tokens_user
-        - modifyDataType:
-            tableName: users
-            columnName: id
-            newDataType: varchar(255)
-        - modifyDataType:
-            tableName: password_reset_tokens
-            columnName: user_id
-            newDataType: varchar(255)
+
         - addForeignKeyConstraint:
             baseTableName: password_reset_tokens
             baseColumnNames: user_id

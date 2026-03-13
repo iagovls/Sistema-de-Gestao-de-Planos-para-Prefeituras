@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record PropostaGetDTO(
-    Long id,
+    int id,
     @NotBlank(message = "Title is mandatory")
     @Size(min = 3, message = "Title must be at least 3 characters")
     String titulo,
@@ -24,7 +24,7 @@ public record PropostaGetDTO(
     OrgaoGestorDTO orgaoGestor,
     String motivo,
     Boolean metaPermanente,
-    Long prefeituraId
+    int prefeituraId
 ) {
 
 }

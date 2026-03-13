@@ -30,7 +30,7 @@ import jakarta.validation.constraints.Size;
 public class Proposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message = "Title is mandatory")
     @Size(min = 3, message = "Title must be at least 3 characters")
@@ -82,7 +82,7 @@ public class Proposta {
     }
     
     
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -131,7 +131,7 @@ public class Proposta {
         }
     } 
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
     

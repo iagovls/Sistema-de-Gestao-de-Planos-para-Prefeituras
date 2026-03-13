@@ -9,7 +9,7 @@ import com.planmanager.www.model.planos.PlanoDTO;
 
 
 public record PrefeituraDTO(
-    Long id,
+    int id,
     String name,
     String logoPrefeitura,
     String logoCMDCA,

@@ -9,7 +9,7 @@ public record CategoriaRequestDTO(
     @Size(min = 3, max = 100, message = "O nome da categoria deve ter entre 3 e 100 caracteres")
     String titulo,
     @NotNull(message = "A prefeitura é obrigatória")
-    Long prefeituraId
+    int prefeituraId
 ) {
 
 }

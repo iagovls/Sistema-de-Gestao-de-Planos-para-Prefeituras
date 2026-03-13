@@ -24,16 +24,16 @@ public record PropostaRequestDTO(
     Boolean ativa,
     
     @NotNull(message = "Plano is mandatory")
-    Long planoId,
+    int planoId,
     
     @NotNull(message = "Eixo is mandatory")
-    Long eixoId,
+    int eixoId,
     
     @NotNull(message = "Categoria is mandatory")
-    Long categoriaId,
+    int categoriaId,
     
     @NotNull(message = "OrgaoGestor is mandatory")
-    Long orgaoGestorId,
+    int orgaoGestorId,
     
     @NotBlank(message = "Motivo is mandatory")
     @Size(min = 10, message = "Motivo must be at least 10 characters")
@@ -45,5 +45,5 @@ public record PropostaRequestDTO(
     
     
     @NotNull(message = "Prefeitura is mandatory")
-    Long prefeituraId
+    int prefeituraId
 ) {}

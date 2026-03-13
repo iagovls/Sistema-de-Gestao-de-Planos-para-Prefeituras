@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class PropostaSnapshot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "titulo")
     private String titulo;
@@ -108,7 +108,7 @@ public class PropostaSnapshot {
         this.propostaCancelada = propostaCancelada;
     }
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
     

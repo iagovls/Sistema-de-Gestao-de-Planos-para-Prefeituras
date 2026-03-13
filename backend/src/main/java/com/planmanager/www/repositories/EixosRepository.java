@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planmanager.www.model.eixos.Eixo;
 
-public interface EixosRepository extends JpaRepository<Eixo, Long> {
+public interface EixosRepository extends JpaRepository<Eixo, Integer> {
 
 }

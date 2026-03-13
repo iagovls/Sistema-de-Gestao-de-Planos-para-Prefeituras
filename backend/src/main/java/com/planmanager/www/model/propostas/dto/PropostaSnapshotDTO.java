@@ -5,7 +5,7 @@ import java.util.Date;
 import com.planmanager.www.model.propostas.StatusProposta;
 
 public record PropostaSnapshotDTO(
-    Long id, 
+    int id, 
     String titulo, 
     Date meta, 
     String planoTitulo,

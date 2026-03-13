@@ -19,7 +19,7 @@ public class PropostaSnapshotsController {
     private PropostaSnapshotRepository propostaSnapshotRepository;
 
     @GetMapping("/{propostaId}")
-    public List<PropostaSnapshotDTO> getHistoricoProposta(@PathVariable Long propostaId) {
+    public List<PropostaSnapshotDTO> getHistoricoProposta(@PathVariable int propostaId) {
         return propostaSnapshotRepository.findByPropostaId(propostaId).stream()
                 .map(snapshot -> new PropostaSnapshotDTO(
                     snapshot.getId(),

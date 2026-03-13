@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planmanager.www.model.categorias.Categoria;
 
-public interface CategoriasRepository extends JpaRepository<Categoria, Long> {
+public interface CategoriasRepository extends JpaRepository<Categoria, Integer> {
 
 }

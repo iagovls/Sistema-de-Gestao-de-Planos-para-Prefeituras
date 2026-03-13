@@ -10,11 +10,13 @@ import com.planmanager.www.model.eixos.Eixo;
 import com.planmanager.www.model.planos.Plano;
 import com.planmanager.www.model.propostas.Proposta;
 
-public interface PropostaRepository extends JpaRepository<Proposta, Long> {
+public interface PropostaRepository extends JpaRepository<Proposta, Integer> {
     Optional<Proposta> findByTitulo(String titulo);
     Optional<Proposta> findByPlano(Plano plano);
     Optional<Proposta> findByEixo(Eixo eixo);
     Optional<Proposta> findByCategoria(Categoria categoria);
-    List<Proposta> findByPrefeituraId(Long prefeituraId);
+    List<Proposta> findByPrefeituraId(int prefeituraId);
+    List<Proposta> findByPlano_Prefeitura_Id(int prefeituraId);
+    List<Proposta> findByPlanoIdOrderByEixo_TituloAscTituloAsc(int planoId);
     List<Proposta> findAll();
 }

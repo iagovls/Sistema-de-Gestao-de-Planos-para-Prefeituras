@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
 public class Prefeitura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     @Column(nullable = false)
     private String name;
     
@@ -58,16 +58,16 @@ public class Prefeitura {
     private List<User> users;   
 
 
-    Prefeitura(){}
+    public Prefeitura(){}
 
     
 
     // Getters e setters
-    public Long getId() {
+    public int getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     

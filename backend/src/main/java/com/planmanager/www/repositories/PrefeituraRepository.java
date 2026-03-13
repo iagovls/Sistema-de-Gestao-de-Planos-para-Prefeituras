@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planmanager.www.model.prefeituras.Prefeitura;
 
-public interface PrefeituraRepository extends JpaRepository<Prefeitura, Long> {
+public interface PrefeituraRepository extends JpaRepository<Prefeitura, Integer> {
 }

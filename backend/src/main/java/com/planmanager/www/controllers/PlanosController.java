@@ -1,12 +1,16 @@
 package com.planmanager.www.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,6 +20,7 @@ import com.planmanager.www.model.planos.PlanoRequestDTO;
 import com.planmanager.www.model.prefeituras.Prefeitura;
 import com.planmanager.www.repositories.PlanosRepository;
 import com.planmanager.www.repositories.PrefeituraRepository;
+import com.planmanager.www.services.RelatorioPlanoPdfService;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +33,9 @@ public class PlanosController {
 
     @Autowired
     private PrefeituraRepository prefeituraRepository;
+
+    @Autowired
+    private RelatorioPlanoPdfService relatorioPlanoPdfService;
 
     @GetMapping
     public List<PlanoDTO> getAll() {
@@ -59,5 +67,27 @@ public class PlanosController {
         }).toList();
         planosRepository.saveAll(planos);
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{planoId}/relatorio.pdf")
+    public ResponseEntity<byte[]> baixarRelatorioPdf
+            (
+                    @PathVariable
+                    int planoId,
+                    @RequestParam(required = true)
+                    int prefeituraId
+            ) {
+        Plano plano = planosRepository.findById(planoId).orElse(null);
+        if (plano == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if ((plano.getPrefeitura() == null || prefeituraId != plano.getPrefeitura().getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+        byte[] arquivo = relatorioPlanoPdfService.gerarRelatorioPorPlano(planoId, prefeituraId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=plano-" + planoId + "-relatorio.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(arquivo);
     }
 }
