@@ -11,11 +11,11 @@ COPY src ./src
 RUN mvn -B -DskipTests package
 
 # Etapa de runtime
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /www
 
 # Copia o JAR gerado na etapa de build
-COPY --from=build /backend/target/*.jar app.jar
+COPY --from=build /www/target/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
