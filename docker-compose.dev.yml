@@ -1,19 +1,23 @@
 services:
 
   nginx:
+    build:
+      context: ./nginx
+      args:
+        ENVIRONMENT: dev
     depends_on:
       - frontend
-  # Adiciona o serviço do MySQL apenas para o ambiente local
-  mysql:
-    image: mysql:8.0
-    container_name: localDB-test
+  # Adiciona o serviço do Postgres apenas para o ambiente local
+  
+  db:
+    image: postgres:16
+    container_name: postgres_db
     env_file:
-      - .env.local
+      - .env.dev
     ports:
-      - "3306:3306"
+      - "5433:5432"
     volumes:
-      # Monta o volume nomeado para persistir os dados do banco
-      - mysql-data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   # Adiciona o serviço do frontend
@@ -35,9 +39,11 @@ services:
   # Adiciona uma dependência no backend para que ele espere o mysql iniciar
   backend:
     depends_on:
-      - mysql
+      - db
+    env_file:
+      - .env.dev
 
-# Define um volume nomeado para que os dados do MySQL não se percam
+# Define um volume nomeado para que os dados do Postgres não se percam
 # quando o contêiner for recriado
 volumes:
-  mysql-data:
+  postgres_data:
