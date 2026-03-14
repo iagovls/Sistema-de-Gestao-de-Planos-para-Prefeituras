@@ -46,7 +46,7 @@ public class PropostaService {
     @Autowired
     private PropostaSnapshotService propostaSnapshotService;
 
-    public ResponseEntity<?> createProposta(PropostaRequestDTO dto, UserDetails userDetails) {
+    public ResponseEntity<PropostaRequestDTO> createProposta(PropostaRequestDTO dto, UserDetails userDetails) {
         if (userDetails == null) {
             throw new RuntimeException("Usuário não autenticado");
         }
@@ -63,16 +63,16 @@ public class PropostaService {
                 .orElseThrow(() -> new RuntimeException("Órgão gestor não encontrado"));
 
         if (!validarCategoriaDaMesmaPrefeitura(dto.prefeituraId(), categoria)){
-                return ResponseEntity.badRequest().body("Categoria inválida para a prefeitura informada");
+                return ResponseEntity.badRequest().build();
         }
         if (!validarEixoDaMesmaPrefeitura(dto.prefeituraId(), eixo)){
-                return ResponseEntity.badRequest().body("Eixo inválido para a prefeitura informada");
+                return ResponseEntity.badRequest().build();
         }
         if (!validarPlanoDaMesmaPrefeitura(dto.prefeituraId(), plano)){
-                return ResponseEntity.badRequest().body("Plano inválido para a prefeitura informada");
+                return ResponseEntity.badRequest().build();
         }
         if (!validarOrgaoGestorDaMesmaPrefeitura(dto.prefeituraId(), orgaoGestor)){
-                return ResponseEntity.badRequest().body("Órgão gestor inválido para a prefeitura informada");
+                return ResponseEntity.badRequest().build();
         }
 
         Proposta proposta = PropostaMapper.toEntity(dto, prefeitura, plano, eixo, categoria, orgaoGestor);
@@ -82,7 +82,7 @@ public class PropostaService {
         return ResponseEntity.ok(dto);
     }
 
-    public ResponseEntity<?> salvarEmLote(List<PropostaRequestDTO> dtos) {
+    public ResponseEntity<List<PropostaRequestDTO>> salvarEmLote(List<PropostaRequestDTO> dtos) {
         List<Proposta> propostas;
         try {
             propostas = dtos.stream().map(dto -> {
@@ -98,22 +98,22 @@ public class PropostaService {
                         .orElseThrow(() -> new RuntimeException("Órgão gestor não encontrado"));
 
                 if (!validarCategoriaDaMesmaPrefeitura(dto.prefeituraId(), categoria)){
-                    throw new IllegalArgumentException("Categoria inválida para a prefeitura informada");
+                    throw new IllegalArgumentException();
                 }
                 if (!validarEixoDaMesmaPrefeitura(dto.prefeituraId(), eixo)){
-                    throw new IllegalArgumentException("Eixo inválido para a prefeitura informada");
+                    throw new IllegalArgumentException();
                 }
                 if (!validarPlanoDaMesmaPrefeitura(dto.prefeituraId(), plano)){
-                    throw new IllegalArgumentException("Plano inválido para a prefeitura informada");
+                    throw new IllegalArgumentException();
                 }
                 if (!validarOrgaoGestorDaMesmaPrefeitura(dto.prefeituraId(), orgaoGestor)){
-                    throw new IllegalArgumentException("Órgão gestor inválido para a prefeitura informada");
+                    throw new IllegalArgumentException();
                 }
 
                 return PropostaMapper.toEntity(dto, prefeitura, plano, eixo, categoria, orgaoGestor);
             }).toList();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
 
         propostaRepository.saveAll(propostas);

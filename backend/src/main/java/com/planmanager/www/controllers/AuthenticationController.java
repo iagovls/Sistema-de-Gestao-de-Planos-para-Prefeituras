@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +56,7 @@ import jakarta.validation.Valid;
 @Tag(name = "Users", description = "User management API")
 @SecurityRequirement(name = "bearerAuth")
 public class AuthenticationController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -254,7 +257,8 @@ public class AuthenticationController {
         PasswordResetToken token = passwordResetTokenService.createToken(user);
         try {
             emailService.sendResetPasswordEmail(user.getCompleteName(), user.getEmail(), token.getToken());
-        } catch (MessagingException | IOException | InterruptedException e) {
+        } catch (MessagingException | IOException e) {
+            logger.error("Falha ao enviar e-mail de redefinição para {}", user.getEmail(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao enviar email");
         }
         return ResponseEntity.ok("Email de redefinição de senha enviado");
