@@ -203,14 +203,14 @@ WHERE propostas.plano_id = $P{planoId}
 				<textField>
 					<reportElement mode="Opaque" x="0" y="0" width="555" height="17" backcolor="#EBEBEB" uuid="f6ff56a3-1310-454f-9ec1-fafb7578278f"/>
 					<textElement textAlignment="Center">
-						<font size="12" isBold="true"/>
+						<font fontName="DejaVu Sans Bold" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Eixo - " + $F{titulo_eixo}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="Group1">
 					<reportElement mode="Opaque" x="0" y="19" width="555" height="14" backcolor="#EBEBEB" uuid="2fcd11e7-303c-451a-92d2-fe892575102a"/>
 					<textElement textAlignment="Center">
-						<font isBold="true"/>
+						<font fontName="DejaVu Sans Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " propostas"]]></textFieldExpression>
 				</textField>
@@ -233,20 +233,22 @@ WHERE propostas.plano_id = $P{planoId}
 			</image>
 			<textField>
 				<reportElement x="0" y="0" width="555" height="16" uuid="818f47b4-cf8c-408b-8960-8a149c7ad3ed"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Prefeitura de " + $F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="123" y="32" width="309" height="32" uuid="c1dd111f-5f1d-4492-8bcc-4b174e95f9b5"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font fontName="DejaVu Sans Bold" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{titulo_plano}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="227" y="16" width="100" height="18" uuid="cfd1f203-aad4-4b39-bfd5-60496590abd6"/>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font fontName="DejaVu Sans Bold"/>
 				</textElement>
 				<text><![CDATA[Relatório]]></text>
 			</staticText>
@@ -283,13 +285,19 @@ WHERE propostas.plano_id = $P{planoId}
 			</pieChart>
 			<textField evaluationTime="Report">
 				<reportElement x="0" y="292" width="555" height="15" uuid="b9b0556f-d989-4e3e-a3a5-c44b73361450"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Total de propostas: " + $V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="2" y="64" width="555" height="14" uuid="9ad911b7-2c59-4cce-8d5e-86161e587ec9"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Gerado em " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gerado em " 
++ new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+    .format(new java.util.Date(System.currentTimeMillis() - 3L * 60 * 60 * 1000))]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -304,28 +312,43 @@ WHERE propostas.plano_id = $P{planoId}
 			</rectangle>
 			<textField>
 				<reportElement x="0" y="0" width="100" height="16" uuid="48009f3a-7979-4117-a3f2-1937b22dd94f"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="17" width="47" height="14" uuid="8707835f-9e2d-4964-a35e-f8018d8fad27"/>
+				<reportElement x="0" y="17" width="50" height="14" isRemoveLineWhenBlank="true" uuid="8707835f-9e2d-4964-a35e-f8018d8fad27"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
 				<text><![CDATA[Categoria:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="31" width="64" height="14" uuid="1cbed307-a777-471c-aac9-180624d0a883"/>
+				<reportElement x="0" y="31" width="60" height="14" isRemoveLineWhenBlank="true" uuid="1cbed307-a777-471c-aac9-180624d0a883"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
 				<text><![CDATA[Orgão Gestor:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="286" y="28" width="28" height="14" uuid="7b6e2277-3efa-4a7f-9128-015a620dd1de"/>
+				<reportElement x="286" y="29" width="28" height="14" uuid="7b6e2277-3efa-4a7f-9128-015a620dd1de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<text><![CDATA[Meta:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="401" y="28" width="34" height="14" uuid="c0d1010c-b98a-448b-a055-db87b77a1a0c"/>
+				<reportElement x="401" y="29" width="34" height="14" uuid="c0d1010c-b98a-448b-a055-db87b77a1a0c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<text><![CDATA[Status:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="435" y="28" width="100" height="14" uuid="2f105a2b-9b27-4373-ada3-6014ec39a219"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<reportElement x="435" y="29" width="100" height="14" uuid="2f105a2b-9b27-4373-ada3-6014ec39a219"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["1".equals($F{status}) 
 ? "Concluído" 
@@ -334,23 +357,23 @@ WHERE propostas.plano_id = $P{planoId}
 : "Em Andamento"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="314" y="28" width="81" height="14" uuid="3dfc24bb-e2ec-421f-9a12-41c9c052f3b4"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<reportElement x="314" y="29" width="81" height="14" uuid="3dfc24bb-e2ec-421f-9a12-41c9c052f3b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{meta_permanente} ? "Permanente" : $F{meta}.toString().substring(0,4)]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="47" y="17" width="238" height="14" uuid="03714048-ab9b-4156-b350-c4267ff5d3a6"/>
+				<reportElement x="44" y="17" width="238" height="14" uuid="03714048-ab9b-4156-b350-c4267ff5d3a6"/>
 				<textElement>
-					<font isBold="true"/>
+					<font fontName="DejaVu Sans Bold" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{titulo_categoria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="64" y="31" width="222" height="14" uuid="61520843-9fc8-49c3-bf8b-254700aaaa24"/>
+				<reportElement x="59" y="31" width="222" height="14" uuid="61520843-9fc8-49c3-bf8b-254700aaaa24"/>
 				<textElement>
-					<font isBold="true"/>
+					<font fontName="DejaVu Sans Bold" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{titulo_orgao}]]></textFieldExpression>
 			</textField>
@@ -365,7 +388,9 @@ WHERE propostas.plano_id = $P{planoId}
 		<band height="16" splitType="Stretch">
 			<textField>
 				<reportElement x="349" y="0" width="206" height="16" uuid="18e738a6-8549-47ce-8766-5dbaeb4b0eef"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
