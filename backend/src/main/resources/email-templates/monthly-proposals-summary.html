@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumo mensal de propostas</title>
+</head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f4f6;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="700" cellspacing="0" cellpadding="0" style="max-width:700px;background:#ffffff;border-radius:10px;padding:24px;">
+          <tr>
+            <td>
+              <h2 style="margin:0 0 12px 0;color:#111827;">Resumo mensal de propostas</h2>
+              <p style="margin:0 0 8px 0;color:#374151;">Olá, {{USER_NAME}}.</p>
+              <p style="margin:0 0 8px 0;color:#374151;">Prefeitura: <strong>{{PREFEITURA_NAME}}</strong></p>
+              <p style="margin:0 0 20px 0;color:#374151;">Mês de referência: <strong>{{MES_REFERENCIA}}</strong></p>
+              {{SECTION_METAS_PERMANENTES}}
+              {{SECTION_VENCIDAS}}
+              {{SECTION_MENOS_1_MES}}
+              {{SECTION_1_3_MESES}}
+              {{SECTION_3_6_MESES}}
+              {{SECTION_6_12_MESES}}
+              <p style="margin:24px 0 0 0;color:#6b7280;font-size:12px;">Mensagem automática do sistema de gestão de planos.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

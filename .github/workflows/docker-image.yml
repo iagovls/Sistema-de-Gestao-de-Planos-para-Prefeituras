@@ -46,6 +46,8 @@ jobs:
           spring.mail.password=${{ secrets.SPRING_MAIL_PASSWORD }}
           spring.mail.properties.mail.smtp.auth=true
           spring.mail.properties.mail.smtp.starttls.enable=true
+          monthly.proposals.email.cron=0 0 8 1 * *
+          monthly.proposals.email.zone=America/Sao_Paulo
           EOF
           docker compose pull
           sudo docker compose down && sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
